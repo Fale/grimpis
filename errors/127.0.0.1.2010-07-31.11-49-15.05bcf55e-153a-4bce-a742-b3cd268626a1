@@ -1,0 +1,17 @@
+(dp1
+S'output'
+p2
+S''
+sS'layer'
+p3
+S'/home/web2py/applications/isys/controllers/default.py'
+p4
+sS'code'
+p5
+S'# coding: utf8\n# try something like\ndef index():\n    return dict()\n\ndef show_example():\n    return dict(invoice=plugin_editable_jqgrid(db.works))\n\nresponse._vars=response._caller(show_example)\n'
+p6
+sS'traceback'
+p7
+S'Traceback (most recent call last):\n  File "/home/web2py/gluon/restricted.py", line 178, in restricted\n    exec ccode in environment\n  File "/home/web2py/applications/isys/controllers/default.py", line 9, in <module>\n  File "/home/web2py/gluon/globals.py", line 96, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/web2py/applications/isys/controllers/default.py", line 7, in show_example\n    return dict(invoice=plugin_editable_jqgrid(db.works))\n  File "/home/web2py/applications/isys/models/plugin_editable_jqgrid.py", line 165, in __init__\n    self.params.col_names=\'[\'+\',\'.join(["\'"+get_col_header(f)+"\'" for f in columns])+\']\'\nTypeError: cannot concatenate \'str\' and \'lazyT\' objects\n'
+p8
+s.

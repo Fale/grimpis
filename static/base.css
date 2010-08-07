@@ -1,0 +1,84 @@
+/*stili per il layout fisso con background*/
+html,body{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: arial,sans-serif;
+    font-size: 76%;
+}
+
+.border{
+    border-width: 1px; 
+    border-style: solid; 
+    border-color: #ccc;
+}
+
+/*stili specifici per il layout*/
+div.header{
+    margin: 2px 2px 2px 2px;
+    padding: 2px 2px 2px 2px;
+}
+
+div.navigation{
+    float: left;
+    width: 180px;
+    margin: 0 2px 2px 2px;
+    padding: 2px 2px 2px 2px;
+    border-right: 5px solid #E5ECF9;
+}
+
+div.content{
+    margin: 2px 2px 2px 200px;
+    padding: 2px 2px 2px 2px;
+}
+
+div.footer{
+    clear: both; 
+    text-align: center; 
+    margin: 2px 2px 2px 2px;
+    padding: 20px 2px 2px 2px;
+}
+
+.edit {
+    background-color: #E5ECF9;
+}
+
+div.flash {
+    position: absolute;
+    float: right;
+    padding: 10px;
+    top: 0px;
+    right: 0px;
+    opacity: 0.75;
+    margin: 10px 10px 10px 10px;
+    text-align: center;
+    clear: both;
+    font-size: 11pt;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #E5ECF9;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    z-index: 2;
+}
+
+table.smarttable {
+    width: 100%;
+}
+
+th {
+    background-color:#DFDFFF;
+}
+
+td {
+    background-color:#EFEFFF;
+    padding:.3em 1em;
+    text-align:center;
+}
+
+tr.odd td{
+    background-color: #E9E9FF;
+}

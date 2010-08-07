@@ -1,0 +1,17 @@
+(dp1
+S'output'
+p2
+S''
+sS'layer'
+p3
+S'/home/web2py/applications/isys/controllers/customers.py'
+p4
+sS'code'
+p5
+S"# -*- coding: utf-8 -*- \nfrom applications.isys.modules.data import *\n#########################################################################\n## This is the controller for works managment\n## - index is the default action of any application\n## - user is required for authentication and authorization\n## - download is for downloading files uploaded in the db (does streaming)\n## - call exposes all registered services (none by default)\n######################################################################### \n    \ndef index():\n    form=crud.create(db.customers)\n    customers=db(db.customers.id>0).select(orderby=db.customers.name)\n    return dict(customers=customers,form=form)\n\ndef add():\n    form=crud.create(db.customers,next=url('index'))\n    companies=db(db.customers.id>0).select(orderby=db.customers.name)\n    return dict(companies=companies,form=form)\n\ndef edit():\n    customers_id=request.args(0)\n    customers=db.customers[customers_id]\n    form=crud.update(db.customers,customers,next=url('index'))\n    return dict(form=form)\n\ndef test():\n    return dict(data=list(db.customers,'name',''))\n\nresponse._vars=response._caller(test)\n"
+p6
+sS'traceback'
+p7
+S'Traceback (most recent call last):\n  File "/home/web2py/gluon/restricted.py", line 178, in restricted\n    exec ccode in environment\n  File "/home/web2py/applications/isys/controllers/customers.py", line 30, in <module>\n  File "/home/web2py/gluon/globals.py", line 96, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/web2py/applications/isys/controllers/customers.py", line 28, in test\n    return dict(data=list(db.customers,\'name\',\'\'))\n  File "/home/web2py/applications/isys/modules/data.py", line 11, in list\n    form=crud.create(db)\nNameError: global name \'crud\' is not defined\n'
+p8
+s.

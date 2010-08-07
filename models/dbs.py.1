@@ -1,0 +1,58 @@
+# coding: utf8
+from applications.isys.modules.states import *
+
+is_phone = IS_MATCH('^(\+\d{2}\-)?[\d\-]*(\#\d+)?$')
+
+
+db.define_table('clients',
+    Field('name'),
+    Field('piva'),
+    Field('email'),
+    Field('address_num'),
+    Field('address_road'),
+    Field('address_city'),
+    Field('address_county'),
+    Field('address_zip'),
+    Field('address_state'),
+    Field('mobile'),
+    Field('phone'),
+    Field('fax'))
+    
+db.clients.name.label=T("Name")
+db.clients.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'clients.name')]
+db.clients.piva.label=T("P IVA")
+db.clients.piva.requires=IS_NOT_EMPTY()
+db.clients.email.label=T("E-Mail")
+db.clients.address_num.label=T("Number")
+db.clients.address_road.label=T("Street")
+db.clients.address_city.label=T("City")
+db.clients.address_county.label=T("County")
+db.clients.address_zip.label=T("ZIP Code")
+db.clients.address_state.label=T("State")
+db.clients.address_state.requires = IS_IN_SET(STATES)
+db.clients.mobile.label=T("Mobile")
+db.clients.mobile.requires=is_phone
+db.clients.phone.label=T("Phone")
+db.clients.phone.requires=is_phone
+db.clients.fax.label=T("Fax")
+db.clients.fax.requires=is_phone
+
+
+
+db.define_table('works',
+    Field('name'),
+    Field('client'),
+    Field('description'),
+    Field('assign_date'),
+    Field('due_to_date'),
+    Field('value'),
+    Field('cost'))
+    
+db.works.name.label=T("Name")
+db.works.client.label=T("Client")
+db.works.client.requires = IS_IN_DB(db, db.clients.name)
+db.works.description.label=T("description")
+db.works.assign_date.label=T("Assigned")
+db.works.due_to_date.label=T("Due To")
+db.works.value.label=T("Value")
+db.works.cost.label=T("Cost")

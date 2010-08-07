@@ -1,0 +1,242 @@
+timestamp: 2010-07-26T01:00:03.034570
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512)
+);
+success!
+timestamp: 2010-07-26T01:00:03.222583
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2010-07-26T01:00:03.374977
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2010-07-26T01:00:03.522318
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2010-07-26T01:00:03.672579
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2010-07-27T09:19:51.886256
+CREATE TABLE company(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    url CHAR(512),
+    address CHAR(512),
+    phone CHAR(512),
+    fax CHAR(512)
+);
+success!
+timestamp: 2010-07-27T10:17:14.155948
+ALTER TABLE company ADD piva CHAR(512);
+timestamp: 2010-07-27T10:39:20.086626
+ALTER TABLE company ADD email CHAR(512);
+timestamp: 2010-07-28T13:18:16.292839
+ALTER TABLE company ADD address_city CHAR(512);
+timestamp: 2010-07-28T13:18:16.551899
+ALTER TABLE company ADD address_county CHAR(512);
+timestamp: 2010-07-28T13:18:16.663197
+ALTER TABLE company ADD address_road CHAR(512);
+timestamp: 2010-07-28T13:18:16.763394
+ALTER TABLE company ADD address_num CHAR(512);
+timestamp: 2010-07-28T13:18:16.864232
+ALTER TABLE company ADD address_state CHAR(512);
+timestamp: 2010-07-28T13:18:16.963720
+ALTER TABLE company ADD address_zip CHAR(512);
+timestamp: 2010-07-28T14:47:44.651722
+CREATE TABLE clients(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    piva CHAR(512),
+    email CHAR(512),
+    address_num CHAR(512),
+    address_road CHAR(512),
+    address_city CHAR(512),
+    address_county CHAR(512),
+    address_zip CHAR(512),
+    address_state CHAR(512),
+    phone CHAR(512),
+    fax CHAR(512)
+);
+success!
+timestamp: 2010-07-28T15:25:40.130351
+ALTER TABLE clients ADD mobile CHAR(512);
+timestamp: 2010-07-28T15:42:24.394681
+CREATE TABLE works(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    client CHAR(512),
+    description CHAR(512),
+    assign_date CHAR(512),
+    due_to_date CHAR(512),
+    value CHAR(512),
+    cost CHAR(512)
+);
+success!
+timestamp: 2010-07-30T18:58:41.316882
+CREATE TABLE clients(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    piva CHAR(512),
+    email CHAR(512),
+    address_num CHAR(512),
+    address_road CHAR(512),
+    address_city CHAR(512),
+    address_county CHAR(512),
+    address_zip CHAR(512),
+    address_state CHAR(512),
+    mobile CHAR(512),
+    phone CHAR(512),
+    fax CHAR(512)
+);
+success!
+timestamp: 2010-07-30T18:58:41.502742
+CREATE TABLE works(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    client CHAR(512),
+    description CHAR(512),
+    assign_date CHAR(512),
+    due_to_date CHAR(512),
+    value CHAR(512),
+    cost CHAR(512)
+);
+success!
+timestamp: 2010-07-31T10:59:47.808858
+CREATE TABLE category(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512)
+);
+success!
+timestamp: 2010-07-31T10:59:47.976847
+CREATE TABLE things(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    quantity INTEGER,
+    owner CHAR(512),
+    price DOUBLE,
+    category INTEGER REFERENCES category(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2010-07-31T11:26:28.398324
+CREATE TABLE customer(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    vat_code CHAR(512)
+);
+success!
+timestamp: 2010-07-31T11:26:28.546295
+CREATE TABLE payment_type(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    days INTEGER,
+    end_of_month CHAR(1)
+);
+success!
+timestamp: 2010-07-31T11:26:28.666416
+CREATE TABLE invoice(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    code CHAR(512),
+    customer INTEGER REFERENCES customer(id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    emitted_on DATE,
+    emitted_at TIME,
+    emitted CHAR(1),
+    remarks TEXT,
+    total_amount DOUBLE,
+    tax_percentage INTEGER
+);
+success!
+timestamp: 2010-07-31T11:46:05.474116
+CREATE TABLE customers(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    piva TEXT,
+    email TEXT,
+    address_num TEXT,
+    address_road TEXT,
+    address_city TEXT,
+    address_county TEXT,
+    address_zip TEXT,
+    address_state TEXT,
+    mobile TEXT,
+    phone TEXT,
+    fax TEXT
+);
+success!
+timestamp: 2010-07-31T11:46:58.732155
+ALTER TABLE works ADD customer INTEGER REFERENCES customers(id) ON DELETE CASCADE;
+timestamp: 2010-08-06T17:08:36.612968
+CREATE TABLE customers(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    piva CHAR(512),
+    email CHAR(512),
+    address_num CHAR(512),
+    address_road CHAR(512),
+    address_city CHAR(512),
+    address_county CHAR(512),
+    address_zip CHAR(512),
+    address_state CHAR(512),
+    mobile CHAR(512),
+    phone CHAR(512),
+    fax CHAR(512)
+);
+success!
+timestamp: 2010-08-06T17:08:36.821417
+CREATE TABLE works(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    customer INTEGER REFERENCES customers(id) ON DELETE CASCADE,
+    description CHAR(512),
+    assign_date DATE,
+    due_to_date DATE,
+    value INTEGER,
+    cost INTEGER
+);
+success!
+timestamp: 2010-08-06T17:25:25.387021
+CREATE TABLE users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user CHAR(512),
+    name CHAR(512),
+    surname CHAR(512),
+    employed DATE,
+    montly INTEGER
+);
+success!
+timestamp: 2010-08-06T17:25:25.592759
+CREATE TABLE hours(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    work INTEGER REFERENCES works(id) ON DELETE CASCADE,
+    user INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    start TIME,
+    finish TIME,
+    note CHAR(512)
+);
+success!
