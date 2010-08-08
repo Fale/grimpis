@@ -58,6 +58,7 @@
 'Name': 'Name',
 'New Record': 'New Record',
 'No databases in this application': 'No databases in this application',
+'Notes': 'Notes',
 'Number': 'Number',
 'Origin': 'Origin',
 'P IVA': 'P IVA',
