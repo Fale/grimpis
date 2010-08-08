@@ -9,9 +9,12 @@
 ######################################################################### 
     
 def index():
-    form=crud.create(db.works)
-    rows=db(db.works.id>0).select(orderby=db.works.name)
-    return dict(rows=rows,form=form)
+    filter_id = request.args(0)
+    if filter_id == None:
+        rows=db(db.works.id>0).select(orderby=db.works.name)
+    else:
+        rows=db(db.works.customer==filter_id).select(orderby=db.works.name)
+    return dict(rows=rows)
 
 def add():
     form=crud.create(db.works,next=url('index'))

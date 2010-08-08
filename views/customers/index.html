@@ -8,6 +8,7 @@
       <th>{{=db.customers.email.label}}</th>
       <th>{{=db.customers.mobile.label}}</th>
       <th>{{=db.customers.phone.label}}</th>
+      <th>{{=T("Works")}}</th>
     </tr>    
 </thead>
 <tbody>
@@ -19,6 +20,7 @@
        <td>{{=row.email}}</td>   
        <td>{{=row.mobile}}</td>   
        <td>{{=row.phone}}</td>
+       <td>{{=A(T("View"),_href=URL(request.application,"works","index", args=[row.id]))}}</td>
     </tr>
 {{pass}}
 </tbody>
