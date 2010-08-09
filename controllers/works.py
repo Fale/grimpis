@@ -9,11 +9,11 @@
 ######################################################################### 
     
 def index():
-    filter_id = request.args(0)
-    if filter_id == None:
+    filter_customer = request.vars.c
+    if filter_customer == None:
         rows=db(db.works.id>0).select(orderby=db.works.name)
     else:
-        rows=db(db.works.customer==filter_id).select(orderby=db.works.name)
+        rows=db(db.works.customer==filter_customer).select(orderby=db.works.name)
     return dict(rows=rows)
 
 def add():
