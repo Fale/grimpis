@@ -9,10 +9,13 @@ body{
     font-size: 76%;
 }
 
-.border{
-    border-width: 1px; 
-    border-style: solid; 
-    border-color: #ccc;
+/* Generic div styles */
+div.left{
+    float:left;
+}
+
+div.right{
+    float:right;
 }
 
 /*stili specifici per il layout*/
@@ -39,6 +42,19 @@ div.footer{
     text-align: center; 
     margin: 2px 2px 2px 2px;
     padding: 20px 2px 2px 2px;
+}
+
+div.add{
+    float:right;
+    font-size: 120%;
+    font-weight: bold;
+    padding: 0px 50px 0px 0px;
+}
+
+div.title{
+    float:left;
+    font-size: 200%;
+    font-weight: bold;
 }
 
 .edit {

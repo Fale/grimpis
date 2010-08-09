@@ -1,4 +1,6 @@
 {{extend 'layout.html'}}
+<div class="title">{{=T("List Customers")}}</div>
+<div class="add">{{=A(T("Add Customer"),_href=URL(request.application,"customers","add"))}}</div>
 <table class="smarttable">
 <thead>
     <tr>

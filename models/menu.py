@@ -14,14 +14,10 @@ response.subtitle = T('Grimp Informative System')
 
 response.menu = [
     (T('Index'), False, URL(request.application,'default','index'), []),
-    (T('Customers'), False, URL(request.application,'customers','index'), [
-        (T('Add'), False, URL(request.application,'customers','add'), [])]),
-    (T('Works'), False, URL(request.application,'works','index'), [
-        (T('Add'), False, URL(request.application,'works','add'), [])]),
-    (T('Users'), False, URL(request.application,'users','index'), [
-        (T('Add'), False, URL(request.application,'users','add'), [])]),
-    (T('Hours'), False, URL(request.application,'hours','index'), [
-        (T('Add'), False, URL(request.application,'hours','add'), [])])
+    (T('Customers'), False, URL(request.application,'customers','index'), []),
+    (T('Works'), False, URL(request.application,'works','index'), []),
+    (T('Users'), False, URL(request.application,'users','index'), []),
+    (T('Hours'), False, URL(request.application,'hours','index'), [])
     ]
 
 ##########################################
