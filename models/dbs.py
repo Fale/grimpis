@@ -92,3 +92,23 @@ db.hours.user.requires=IS_IN_DB(db,'users.id','%(name)s %(surname)s')
 db.hours.start.label=T("Starting time")
 db.hours.finish.label=T("Finishing time")
 db.hours.note.label=T("Notes")
+
+
+from gluon.tools import Mail, Auth, Recaptcha
+
+mail = Mail()
+## specify your SMTP server
+mail.settings.server = 'smtp.grimp.eu:25'
+## specify your email address
+mail.settings.sender = 'uis@grimp.eu'
+## optional: specify the username and password for SMTP
+mail.settings.login = 'uis@Z27392'
+
+## instantiate the Auth class (or your derived class)
+auth = Auth(globals(), db)
+## ask it to create all necessary tables
+auth.define_tables()
+## optional: require email verification for registration
+# auth.settings.mailer = mail
+## optional: if you require captcha verification for registration
+# auth.settings.captcha = Recaptcha(request,public_key='RECAPTCHA_PUBLIC_KEY',private_key='RECAPTCHA_PRIVATE_KEY')
