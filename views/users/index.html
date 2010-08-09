@@ -8,6 +8,7 @@
       <th>{{=db.users.surname.label}}</th>
       <th>{{=db.users.employed.label}}</th>
       <th>{{=db.users.montly.label}}</th>
+      <th>{{=T("Hours")}}</th>
     </tr>    
 </thead>
 <tbody>
@@ -19,6 +20,7 @@
        <td>{{=row.surname}}</td>
        <td>{{=row.employed}}</td>
        <td>{{=row.montly}}</td>
+       <td>{{=A(T("View"),_href=URL(request.application,"hours","index", vars=dict(u=row.id)))}}</td>
     </tr>
 {{pass}}
 </tbody>
