@@ -9,6 +9,11 @@ body{
     font-size: 76%;
 }
 
+/* URLs */
+a:link, a:visited, a:active, a:hover {
+    color: #0000ff;
+}
+
 /* Generic div styles */
 div.left{
     float:left;
@@ -30,6 +35,8 @@ div.navigation{
     margin: 0 2px 2px 2px;
     padding: 2px 2px 2px 2px;
     border-right: 5px solid #E5ECF9;
+    font-weight:bold;
+    font-size:120%;
 }
 
 div.content{
