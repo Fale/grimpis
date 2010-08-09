@@ -22,7 +22,7 @@
        <td>{{=row.due_to_date}}</td>
        <td>{{=row.value}}</td>
        <td>{{=row.cost}}</td>
-       <td>{{=A(T("View"),_href=URL(request.application,"hours","index", args=[row.id]))}}</td>
+       <td>{{=A(T("View"),_href=URL(request.application,"hours","index", vars=dict(w=row.id)))}}</td>
     </tr>
 {{pass}}
 </tbody>
