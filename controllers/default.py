@@ -7,3 +7,6 @@ def index():
 
 def user():
     return dict(form = auth())
+
+def data():
+    return dict(form = crud())

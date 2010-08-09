@@ -96,19 +96,19 @@ db.hours.note.label=T("Notes")
 
 from gluon.tools import Mail, Auth, Recaptcha
 
-mail = Mail()
-## specify your SMTP server
-mail.settings.server = 'smtp.grimp.eu:25'
-## specify your email address
-mail.settings.sender = 'uis@grimp.eu'
-## optional: specify the username and password for SMTP
-mail.settings.login = 'uis@Z27392'
-
-## instantiate the Auth class (or your derived class)
+#from gluon.contrib.login_methods.gae_google_login import GaeGoogleAccount
+#auth.settings.login_form = GaeGoogleAccount()
+#auth.settings.create_user_groups = False
 auth = Auth(globals(), db)
 ## ask it to create all necessary tables
 auth.define_tables()
-## optional: require email verification for registration
-# auth.settings.mailer = mail
-## optional: if you require captcha verification for registration
-# auth.settings.captcha = Recaptcha(request,public_key='RECAPTCHA_PUBLIC_KEY',private_key='RECAPTCHA_PRIVATE_KEY')
+auth.settings.mailer = mail
+
+mail = Mail()
+## specify your SMTP server
+mail.settings.server = 'gae'
+mail.settings.sender = 'uis@grimp.eu'
+mail.settings.login = 'uis@Z27392'
+
+from gluon.tools import Crud
+crud = Crud(globals(),db)
