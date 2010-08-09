@@ -71,7 +71,6 @@ db.define_table('users',
     Field('employed','date'),
     Field('montly','integer'))
 
-db.users.user.label=T("Username")
 db.users.name.label=T("Name")
 db.users.surname.label=T("Surname")
 db.users.employed.label=T("Employed date")
