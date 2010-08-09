@@ -2,25 +2,27 @@
 <table class="smarttable">
 <thead>
     <tr>
-      <th width="16px">{{=IMG(_src=URL(request.application,'static/images','edit.png'))}}</th>
-      <th>{{=db.works.name.label}}</th>
-      <th>{{=db.works.customer.label}}</th>
-      <th>{{=db.works.assign_date.label}}</th>
-      <th>{{=db.works.due_to_date.label}}</th>
-      <th>{{=db.works.value.label}}</th>
-      <th>{{=db.works.cost.label}}</th>
+        <th width="16px">{{=IMG(_src=URL(request.application,'static/images','edit.png'))}}</th>
+        <th>{{=db.works.name.label}}</th>
+        <th>{{=db.works.customer.label}}</th>
+        <th>{{=db.works.assign_date.label}}</th>
+        <th>{{=db.works.due_to_date.label}}</th>
+        <th>{{=db.works.value.label}}</th>
+        <th>{{=db.works.cost.label}}</th>
+        <th>{{=T("Hours")}}</th>
     </tr>    
 </thead>
 <tbody>
 {{for k,row in enumerate(rows):}} 
     <tr class="{{='odd' if k%2 else 'even'}}">
-      <td>{{=A(IMG(_src=URL(request.application,'static/images','edit.png')),_href=URL(request.application,"works","edit", args=[row.id]))}}</td>
-      <td>{{=row.name}}</td>   
-      <td>{{=row.customer.name}}</td>
-      <td>{{=row.assign_date}}</td>
-      <td>{{=row.due_to_date}}</td>
-      <td>{{=row.value}}</td>
-      <td>{{=row.cost}}</td>
+       <td>{{=A(IMG(_src=URL(request.application,'static/images','edit.png')),_href=URL(request.application,"works","edit", args=[row.id]))}}</td>
+       <td>{{=row.name}}</td>   
+       <td>{{=row.customer.name}}</td>
+       <td>{{=row.assign_date}}</td>
+       <td>{{=row.due_to_date}}</td>
+       <td>{{=row.value}}</td>
+       <td>{{=row.cost}}</td>
+       <td>{{=A(T("View"),_href=URL(request.application,"hours","index", vars=dict(w=row.id)))}}</td>
     </tr>
 {{pass}}
 </tbody>
