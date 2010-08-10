@@ -4,10 +4,10 @@ from applications.init.modules.states import *
 is_phone = IS_MATCH('^(\+\d{2}\-)?[\d\-]*(\#\d+)?$')
 
 try:
-    db=DAL("sqlite://dba.db")
-except:
     db=DAL('gae')
     session.connect(request,response,db=db)
+except:
+    db=DAL("sqlite://dba.db")
 
 db.define_table('customers',
     Field('name','string'),
@@ -101,7 +101,7 @@ from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
 auth.settings.login_form = GaeGoogleAccount()
 auth.settings.create_user_groups = False
 ## ask it to create all necessary tables
-auth.define_tables()
+#auth.define_tables()
 auth.settings.mailer = mail
 
 mail = Mail()
