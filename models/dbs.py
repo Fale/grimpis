@@ -1,5 +1,6 @@
 # coding: utf8
 from applications.init.modules.states import *
+from applications.init.modules.status import *
 
 is_phone = IS_MATCH('^(\+\d{2}\-)?[\d\-]*(\#\d+)?$')
 
@@ -35,6 +36,7 @@ db.customers.address_county.label=T("County")
 db.customers.address_zip.label=T("ZIP Code")
 db.customers.address_state.label=T("State")
 db.customers.address_state.requires = IS_IN_SET(STATES)
+db.customers.address_state.default = "Italy"
 db.customers.mobile.label=T("Mobile")
 db.customers.mobile.requires=is_phone
 db.customers.phone.label=T("Phone")
@@ -50,6 +52,7 @@ db.define_table('works',
     Field('description','string'),
     Field('assign_date','date'),
     Field('due_to_date','date'),
+    Field('status','string'),
     Field('value','integer'),
     Field('cost','integer'))
     
@@ -59,6 +62,9 @@ db.works.customer.requires=IS_IN_DB(db,'customers.id','customers.name')
 db.works.description.label=T("description")
 db.works.assign_date.label=T("Assigned")
 db.works.due_to_date.label=T("Due To")
+db.works.status.label=T("Status")
+db.works.status.requires = IS_IN_SET(STATUS)
+db.works.status.default = "Open"
 db.works.value.label=T("Value")
 db.works.cost.label=T("Cost")
 
