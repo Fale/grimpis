@@ -101,7 +101,7 @@ from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
 auth.settings.login_form = GaeGoogleAccount()
 auth.settings.create_user_groups = False
 ## ask it to create all necessary tables
-#auth.define_tables()
+auth.define_tables()
 auth.settings.mailer = mail
 
 mail = Mail()
