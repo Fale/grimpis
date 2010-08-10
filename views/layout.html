@@ -10,7 +10,7 @@
         {{include 'web2py_ajax.html'}}
     </head>
     <body>
-        <div class="header"><img src="{{=URL(request.application,'static','images/logo.png')}}"/></div>
+        <div class="header">{{=A(IMG(_src=URL(request.application,'static','images/logo.png')),_href=URL(request.application,'default','index'))}}</div>
         <div class="navigation">{{=MENU(response.menu)}}</div>
         <div class="content">
             <div class="flash">{{=response.flash or ''}}</div>
