@@ -1,6 +1,5 @@
 # coding: utf8
-from applications.init.modules.states import *
-from applications.init.modules.status import *
+from applications.init.modules.sets import *
 
 is_phone = IS_MATCH('^(\+\d{2}\-)?[\d\-]*(\#\d+)?$')
 
@@ -87,6 +86,7 @@ db.users.montly.label=T("Montly wage")
 db.define_table('hours',
     Field('work',db.works),
     Field('user',db.users),
+    Field('type','string'),
     Field('start','datetime'),
     Field('finish','datetime'),
     Field('note','string'))
@@ -95,6 +95,7 @@ db.hours.work.label=T("Work")
 db.hours.work.requires=IS_IN_DB(db,'works.id','%(name)s')
 db.hours.user.label=T("Worker")
 db.hours.user.requires=IS_IN_DB(db,'users.id','%(name)s %(surname)s')
+db.hours.type.requires = IS_IN_SET(TYPES)
 db.hours.start.label=T("Starting time")
 db.hours.finish.label=T("Finishing time")
 db.hours.note.label=T("Notes")

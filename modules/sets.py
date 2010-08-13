@@ -1,5 +1,5 @@
 #!/usr/bin/env python 
-# coding: utf8 
+# coding: utf8
 
 STATES = ('Italy', 'Afghanistan', 'Albania', 'Algeria',
              'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina',
@@ -44,3 +44,7 @@ STATES = ('Italy', 'Afghanistan', 'Albania', 'Algeria',
              'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay',
              'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela',
              'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe')
+
+STATUS = ('Open','Ended','Failed')
+
+TYPES = ('Coding','Designing','Learning')
