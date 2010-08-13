@@ -104,6 +104,7 @@
 'Rows selected': 'Righe selezionate',
 'Starting time': 'Ora inizio',
 'State': 'Stato',
+'Status': 'Status',
 'Street': 'Strada',
 'Stylesheet': 'Fogli di stile',
 'Submit': 'Invia',
