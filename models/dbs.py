@@ -1,5 +1,5 @@
 # coding: utf8
-from applications.isys.modules.states import *
+from applications.init.modules.states import *
 
 is_phone = IS_MATCH('^(\+\d{2}\-)?[\d\-]*(\#\d+)?$')
 
