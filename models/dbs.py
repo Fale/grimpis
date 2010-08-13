@@ -96,6 +96,7 @@ db.hours.work.requires=IS_IN_DB(db,'works.id','%(name)s')
 db.hours.user.label=T("Worker")
 db.hours.user.requires=IS_IN_DB(db,'users.id','%(name)s %(surname)s')
 db.hours.type.requires = IS_IN_SET(TYPES)
+db.hours.type.default = "Coding"
 db.hours.start.label=T("Starting time")
 db.hours.finish.label=T("Finishing time")
 db.hours.note.label=T("Notes")
