@@ -23,8 +23,7 @@ def index():
 
 def add():
     form=crud.create(db.hours,next=url('index'))
-    hours=db(db.hours.id>0).select(orderby=db.hours.work)
-    return dict(hours=hours,form=form)
+    return dict(form=form)
 
 def edit():
     hours_id=request.args(0)

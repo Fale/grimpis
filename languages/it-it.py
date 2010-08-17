@@ -147,6 +147,7 @@
 'Internal State': 'Internal State',
 'Invalid Query': 'Query invalida',
 'Invalid email': 'E-mail non valida',
+'Invalid login': 'Invalid login',
 'Iran': 'Iran',
 'Iraq': 'Iraq',
 'Ireland': 'Irlanda',

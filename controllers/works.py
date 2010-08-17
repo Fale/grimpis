@@ -18,8 +18,7 @@ def index():
 
 def add():
     form=crud.create(db.works,next=url('index'))
-    works=db(db.works.id>0).select(orderby=db.works.name)
-    return dict(works=works,form=form)
+    return dict(form=form)
 
 def edit():
     works_id=request.args(0)
