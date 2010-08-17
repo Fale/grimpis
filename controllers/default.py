@@ -8,6 +8,6 @@ def index():
 def user():
     return dict(form = auth())
 
-#@auth.requires_membership('admin')
+@auth.requires_membership('admin')
 def data():
     return dict(form = crud())
