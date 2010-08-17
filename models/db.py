@@ -32,6 +32,10 @@ auth = Auth(globals(),db)                      # authentication/authorization
 crud = Crud(globals(),db)                      # for CRUD helpers using auth
 service = Service(globals())                   # for json, xml, jsonrpc, xmlrpc, amfrpc
 
+if request.env.web2py_runtime_gae:            # if running on Google App Engine
+    from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
+    auth.settings.login_form = GaeGoogleAccount()
+
 mail.settings.server = 'logging' or 'smtp.gmail.com:587'  # your SMTP server
 mail.settings.sender = 'you@gmail.com'         # your email
 mail.settings.login = 'username:password'      # your credentials or None
