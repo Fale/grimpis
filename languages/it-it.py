@@ -144,6 +144,7 @@
 'Index': 'Indice',
 'India': 'India',
 'Indonesia': 'Indonesia',
+'Insufficient privileges': 'Insufficient privileges',
 'Internal State': 'Internal State',
 'Invalid Query': 'Query invalida',
 'Invalid email': 'E-mail non valida',
