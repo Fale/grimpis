@@ -102,20 +102,20 @@ db.hours.finish.label=T("Finishing time")
 db.hours.note.label=T("Notes")
 
 
-
-
-
 ###DEFAULT VALUES
-#admin=auth.add_group('admin', 'can access to all actions')
-#auth.add_permission(admin, 'admin')
-#auth.add_permission(admin, 'manager')
-#auth.add_permission(admin, 'hr')
-#auth.add_permission(admin, 'crew')
-#manager=auth.add_group('manager', 'can access to managerial actions')
-#auth.add_permission(manager, 'manager')
-#auth.add_permission(manager, 'crew')
-#hr=auth.add_group('hr', 'can access to all human resources action')
-#auth.add_permission(hr, 'hr')
-#auth.add_permission(hr, 'crew')
-#crew=auth.add_group('crew', 'can access to all basic action')
-#auth.add_permission(crew, 'crew')
+#if not db(db.auth_group.id>0).count():
+#    admin=auth.add_group('admin', 'can access to all actions')
+#    auth.add_permission(admin, 'admin')
+#    auth.add_permission(admin, 'manager')
+#    auth.add_permission(admin, 'hr')
+#    auth.add_permission(admin, 'crew')
+#    manager=auth.add_group('manager', 'can access to managerial actions')
+#    auth.add_permission(manager, 'manager')
+#    auth.add_permission(manager, 'crew')
+#    hr=auth.add_group('hr', 'can access to all human resources action')
+#    auth.add_permission(hr, 'hr')
+#    auth.add_permission(hr, 'crew')
+#    crew=auth.add_group('crew', 'can access to all basic action')
+#    auth.add_permission(crew, 'crew')
+#if not db(db.auth_membership.id>0).count():
+#    auth.add_membership(1, 1)
