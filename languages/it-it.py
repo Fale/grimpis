@@ -255,6 +255,7 @@
 'Record Deleted': 'Record Eliminato',
 'Record ID': 'ID del Record',
 'Record Updated': 'Record Aggiornato',
+'Registration ID': 'Registration ID',
 'Registration key': 'Chiave di registrazione',
 'Registration successful': 'Registration successful',
 'Remember me (for 30 days)': 'Remember me (for 30 days)',

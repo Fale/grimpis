@@ -8,26 +8,31 @@ try:
     session.connect(request,response,db=db)
 except:
     db=DAL("sqlite://dba.db")
+        
+    passfield = auth.settings.password_field
 
-db.define_table('auth_user',
-    Field('first_name','string'),
-    Field('last_name','string'),
-    Field('email','string'),
-    Field('employed','date'),
-    Field('montly','integer'),
-    Field('password','string'),
-    Field('registration_key','string'),
-    Field('reset_password_key','string'))
+auth_user_table = db.define_table('auth_user',
+    Field('first_name', length=128, label=T("Name")),
+    Field('last_name', length=128, label=T("Surname")),
+    Field('username', length=128, label=T("Username")),
+    Field('email', length=512, label=T("E-mail")),
+    Field('employed', 'date', label=T("Employed date")),
+    Field('montly', 'integer', label=T("Montly wage")),
+    Field(passfield, 'password', length=512, readable=False, label=T("Password")),
+    Field('registration_key', length=512, writable=False, readable=False, label=T("Registration key")),
+    Field('reset_password_key', length=512, writable=False, readable=False, label=T("Reset password key")),
+    Field('registration_id', length=512, writable=False, readable=False, label=T("Registration ID")))
+    
+db.auth_user.username.requires = IS_NOT_IN_DB(db, 'auth_email.username')
+db.auth_user.first_name.requires = IS_NOT_EMPTY()
+db.auth_user.last_name.requires = IS_NOT_EMPTY()
+#db.auth_user.password.requires = CRYPT(key=auth.settings.hmac_key)
+auth_user_table[passfield].requires = [CRYPT(key=auth.settings.hmac_key)]
+db.auth_user.email.requires = IS_NOT_IN_DB(db, db.auth_user.email)
+db.auth_user.registration_key.default = ''
+auth.settings.table_user = db[auth.settings.table_user_name]
+#db.auth_user.password.requires = [CRYPT(key=auth.settings.hmac_key)]
 
-db.auth_user.first_name.label=T("Name")
-db.auth_user.last_name.label=T("Surname")
-db.auth_user.email.label=T("E-mail")
-db.auth_user.email.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'auth_user.email')]
-db.auth_user.employed.label=T("Employed date")
-db.auth_user.montly.label=T("Montly wage")
-db.auth_user.password.label=T("Password")
-db.auth_user.registration_key.label=T("Registration key")
-db.auth_user.reset_password_key.label=T("Reset password key")
 """
 success!
 timestamp: 2010-08-07T17:52:30.549207
