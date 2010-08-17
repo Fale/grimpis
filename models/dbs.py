@@ -120,3 +120,10 @@ mail.settings.login = 'uis@Z27392'
 
 from gluon.tools import Crud
 crud = Crud(globals(),db)
+
+
+###DEFAULT VALUES
+auth.add_permission(auth.add_group('admin', 'can access to all actions'), 'access to admin')
+auth.add_permission(auth.add_group('manager', 'can access to managerial actions'), 'access to manager')
+auth.add_permission(auth.add_group('hr', 'can access to all human resources action'), 'access to human resources')
+auth.add_permission(auth.add_group('crew', 'can access to all basic action'), 'access to crew')
