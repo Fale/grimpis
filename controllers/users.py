@@ -9,18 +9,18 @@
 ######################################################################### 
 @auth.requires_permission('crew')
 def index():
-    form=crud.create(db.users)
-    rows=db(db.users.id>0).select(orderby=db.users.name)
+    form=crud.create(db.auth_user)
+    rows=db(db.auth_user.id>0).select(orderby=db.auth_user.last_name)
     return dict(rows=rows,form=form)
 
 @auth.requires_permission('hr')
 def add():
-    form=crud.create(db.users,next=url('index'))
+    form=crud.create(db.auth_user,next=url('index'))
     return dict(form=form)
 
 @auth.requires_permission('hr')
 def edit():
-    users_id=request.args(0)
-    users=db.users[users_id]
-    form=crud.update(db.users,users,next=url('index'))
+    edit_id=request.args(0)
+    edit=db.auth_user[edit_id]
+    form=crud.update(db.auth_user,edit,next=url('index'))
     return dict(form=form)

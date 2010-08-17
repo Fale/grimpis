@@ -259,6 +259,7 @@
 'Registration successful': 'Registration successful',
 'Remember me (for 30 days)': 'Remember me (for 30 days)',
 'Reset Password key': 'Resetta la password',
+'Reset password key': 'Reset password key',
 'Role': 'Ruolo',
 'Romania': 'Romania',
 'Rows in table': 'Righe nella tabella',

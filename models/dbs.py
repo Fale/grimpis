@@ -9,6 +9,60 @@ try:
 except:
     db=DAL("sqlite://dba.db")
 
+db.define_table('auth_user',
+    Field('first_name','string'),
+    Field('last_name','string'),
+    Field('email','string'),
+    Field('employed','date'),
+    Field('montly','integer'),
+    Field('password','string'),
+    Field('registration_key','string'),
+    Field('reset_password_key','string'))
+
+db.auth_user.first_name.label=T("Name")
+db.auth_user.last_name.label=T("Surname")
+db.auth_user.email.label=T("E-mail")
+db.auth_user.email.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'auth_user.email')]
+db.auth_user.employed.label=T("Employed date")
+db.auth_user.montly.label=T("Montly wage")
+db.auth_user.password.label=T("Password")
+db.auth_user.registration_key.label=T("Registration key")
+db.auth_user.reset_password_key.label=T("Reset password key")
+"""
+success!
+timestamp: 2010-08-07T17:52:30.549207
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2010-08-07T17:52:30.659899
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2010-08-07T17:52:30.777639
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2010-08-07T17:52:30.873507
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+"""
 db.define_table('customers',
     Field('name','string'),
     Field('piva','string'),
@@ -69,23 +123,9 @@ db.works.cost.label=T("Cost")
 
 
 
-db.define_table('users',
-    Field('user','string'),
-    Field('name','string'),
-    Field('surname','string'),
-    Field('employed','date'),
-    Field('montly','integer'))
-
-db.users.name.label=T("Name")
-db.users.surname.label=T("Surname")
-db.users.employed.label=T("Employed date")
-db.users.montly.label=T("Montly wage")
-
-
-
 db.define_table('hours',
     Field('work',db.works),
-    Field('user',db.users),
+    Field('user',db.auth_user),
     Field('type','string'),
     Field('start','datetime'),
     Field('finish','datetime'),
@@ -94,7 +134,7 @@ db.define_table('hours',
 db.hours.work.label=T("Work")
 db.hours.work.requires=IS_IN_DB(db,'works.id','%(name)s')
 db.hours.user.label=T("Worker")
-db.hours.user.requires=IS_IN_DB(db,'users.id','%(name)s %(surname)s')
+db.hours.user.requires=IS_IN_DB(db,'auth_user.id','%(first_name)s %(last_name)s')
 db.hours.type.requires = IS_IN_SET(TYPES,[T(x) for x in TYPES])
 db.hours.type.default = "Coding"
 db.hours.start.label=T("Starting time")
@@ -105,8 +145,8 @@ db.hours.note.label=T("Notes")
 from gluon.tools import Mail, Auth, Recaptcha
 
 auth = Auth(globals(), db)
-from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
-auth.settings.login_form = GaeGoogleAccount()
+#from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
+#auth.settings.login_form = GaeGoogleAccount()
 auth.settings.create_user_groups = False
 ## ask it to create all necessary tables
 auth.define_tables()
