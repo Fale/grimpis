@@ -18,7 +18,7 @@ auth_user_table = db.define_table('auth_user',
     Field('email', length=512, label=T("E-mail")),
     Field('employed', 'date', label=T("Employed date")),
     Field('montly', 'integer', label=T("Montly wage")),
-    Field(passfield, 'password', length=512, readable=False, label=T("Password")),
+    Field('password', 'password', length=512, readable=False, label=T("Password")),
     Field('registration_key', length=512, writable=False, readable=False, label=T("Registration key")),
     Field('reset_password_key', length=512, writable=False, readable=False, label=T("Reset password key")),
     Field('registration_id', length=512, writable=False, readable=False, label=T("Registration ID")))
@@ -27,7 +27,7 @@ db.auth_user.username.requires = IS_NOT_IN_DB(db, 'auth_email.username')
 db.auth_user.first_name.requires = IS_NOT_EMPTY()
 db.auth_user.last_name.requires = IS_NOT_EMPTY()
 #db.auth_user.password.requires = CRYPT(key=auth.settings.hmac_key)
-auth_user_table[passfield].requires = [CRYPT(key=auth.settings.hmac_key)]
+#auth_user_table[passfield].requires = [CRYPT(key=auth.settings.hmac_key)]
 db.auth_user.email.requires = IS_NOT_IN_DB(db, db.auth_user.email)
 db.auth_user.registration_key.default = ''
 auth.settings.table_user = db[auth.settings.table_user_name]
