@@ -17,6 +17,7 @@ response.menu = [
     (T('Customers'), False, URL(request.application,'customers','index'), []),
     (T('Works'), False, URL(request.application,'works','index'), []),
     (T('Users'), False, URL(request.application,'users','index'), []),
+    (T('Membership'), False, URL(request.application,'membership','index'), []),
     (T('Hours'), False, URL(request.application,'hours','index'), [])
     ]
 
