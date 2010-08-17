@@ -1,0 +1,4 @@
+{{extend 'layout.html'}}
+<div class="title">{{=T("List Memberships")}}</div>
+<div class="add">{{=A(T("Add membership"),_href=URL(request.application,"membership","add"))}}</div>
+{{=rows}}
