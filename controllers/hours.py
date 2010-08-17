@@ -7,7 +7,7 @@
 ## - download is for downloading files uploaded in the db (does streaming)
 ## - call exposes all registered services (none by default)
 ######################################################################### 
-@auth.requires_membership('crew')
+@auth.requires_permission('crew')
 def index():
     # form=crud.create(db.hours)
     filter_work = request.vars.w
@@ -21,12 +21,12 @@ def index():
     # return dict(rows=rows,form=form)
     return dict(rows=rows)
 
-@auth.requires_membership('crew')
+@auth.requires_permission('crew')
 def add():
     form=crud.create(db.hours,next=url('index'))
     return dict(form=form)
 
-@auth.requires_membership('manager')
+@auth.requires_permission('manager')
 def edit():
     hours_id=request.args(0)
     hours=db.hours[hours_id]

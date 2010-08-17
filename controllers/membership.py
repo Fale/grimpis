@@ -8,17 +8,17 @@
 ## - call exposes all registered services (none by default)
 ######################################################################### 
 
-@auth.requires_membership('hr')
+@auth.requires_permission('hr')
 def index():
     rows=db(db.auth_membership.id>0).select(orderby=db.auth_membership.id)
     return dict(rows=rows)
 
-@auth.requires_membership('admin')
+@auth.requires_permission('admin')
 def add():
     form=crud.create(db.auth_membership,next=url('index'))
     return dict(form=form)
 
-@auth.requires_membership('admin')
+@auth.requires_permission('admin')
 def edit():
     edit_id=request.args(0)
     edit=db.auth_membership[edit_id]
