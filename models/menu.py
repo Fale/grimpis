@@ -6,6 +6,7 @@
 
 response.title = "Grimp IS"
 response.subtitle = T('Grimp Informative System')
+response.version = "0.2"
 
 ##########################################
 ## this is the main application menu

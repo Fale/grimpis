@@ -335,6 +335,7 @@
 'Vatican City': 'Città del Vaticano',
 'Venezuela': 'Venezuela',
 'Verify Password': 'Verify Password',
+'Version': 'Version',
 'Version 0.1 beta1.': 'Versione 0.1 beta1',
 'Vietnam': 'Vietnam',
 'View': 'Visualizza',
