@@ -74,7 +74,7 @@
 'Copyright': 'Copyright',
 'Cost': 'Costo',
 'Costa Rica': 'Costa Rica',
-'County': 'Stato',
+'County': 'Provincia',
 'Croatia': 'Croazia',
 'Cuba': 'Cuba',
 'Current request': 'Richiesta corrente',
