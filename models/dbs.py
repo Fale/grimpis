@@ -11,7 +11,7 @@ except:
         
     passfield = auth.settings.password_field
 
-auth_user_table = db.define_table('auth_user',
+db.define_table('auth_user',
     Field('first_name', length=128, label=T("Name")),
     Field('last_name', length=128, label=T("Surname")),
     Field('username', length=128, label=T("Username")),
@@ -32,8 +32,67 @@ db.auth_user.email.requires = IS_NOT_IN_DB(db, db.auth_user.email)
 db.auth_user.registration_key.default = ''
 auth.settings.table_user = db[auth.settings.table_user_name]
 #db.auth_user.password.requires = [CRYPT(key=auth.settings.hmac_key)]
+#auth.settings.table_user = db.auth_user
+
+db.define_table( 'auth_group',
+    Field('role', length=512, default='', label=auth.messages.label_role),
+    Field('description', 'text', label=auth.messages.label_description),
+    format = '%(role)s (%(id)s)')
+db.auth_group.role.requires = IS_NOT_IN_DB(db, '%s.role' % auth.settings.table_group_name)
+auth.settings.table_user = db.auth_group
+
+db.define_table('auth_membership',
+    Field('user_id', db.auth_user, label=auth.messages.label_user_id),
+    Field('group_id', db.auth_group, label=auth.messages.label_group_id))
+    
+db.auth_membership.user_id.requires = IS_IN_DB(db, '%s.id' % db.auth_user, '%(first_name)s %(last_name)s (%(id)s)')
+db.auth_membership.group_id.requires = IS_IN_DB(db, '%s.id' % db.auth_group, '%(role)s (%(id)s)')
 
 """
+if not self.settings.table_permission_name in db.tables:
+table = db.define_table(
+    self.settings.table_permission_name,
+    Field('group_id', self.settings.table_group,
+            label=self.messages.label_group_id),
+    Field('name', default='default', length=512,
+            label=self.messages.label_name),
+    Field('table_name', length=512,
+            label=self.messages.label_table_name),
+    Field('record_id', 'integer',
+            label=self.messages.label_record_id),
+    migrate=self.__get_migrate(
+        self.settings.table_permission_name, migrate))
+table.group_id.requires = IS_IN_DB(db, '%s.id' %
+        self.settings.table_group_name,
+        '%(role)s (%(id)s)')
+table.name.requires = IS_NOT_EMPTY(error_message=self.messages.is_empty)
+table.table_name.requires = IS_IN_SET(self.db.tables)
+table.record_id.requires = IS_INT_IN_RANGE(0, 10 ** 9)
+self.settings.table_permission = db[self.settings.table_permission_name]
+if not self.settings.table_event_name in db.tables:
+table  = db.define_table(
+    self.settings.table_event_name,
+    Field('time_stamp', 'datetime',
+            default=self.environment.request.now,
+            label=self.messages.label_time_stamp),
+    Field('client_ip',
+            default=self.environment.request.client,
+            label=self.messages.label_client_ip),
+    Field('user_id', self.settings.table_user, default=None,
+            label=self.messages.label_user_id),
+    Field('origin', default='auth', length=512,
+            label=self.messages.label_origin),
+    Field('description', 'text', default='',
+            label=self.messages.label_description),
+    migrate=self.__get_migrate(
+        self.settings.table_event_name, migrate))
+table.user_id.requires = IS_IN_DB(db, '%s.id' %
+        self.settings.table_user_name,
+        '%(first_name)s %(last_name)s (%(id)s)')
+table.origin.requires = IS_NOT_EMPTY(error_message=self.messages.is_empty)
+table.description.requires = IS_NOT_EMPTY(error_message=self.messages.is_empty)
+self.settings.table_event = db[self.settings.table_event_name]
+""""""
 success!
 timestamp: 2010-08-07T17:52:30.549207
 CREATE TABLE auth_group(
