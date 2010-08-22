@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 from applications.init.modules.sets import *
-is_phone = IS_MATCH('^(\+\d{2}\-)?[\d\-]*(\#\d+)?$')
+is_phone = IS_MATCH('^(\+)?(\+\d{2}\-)?[\d\-]*(\#\d+)?$')
 
 #########################################################################
 ## This scaffolding model makes your app work on Google App Engine too
