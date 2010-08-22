@@ -39,6 +39,21 @@ if request.env.web2py_runtime_gae:            # if running on Google App Engine
     from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
     auth.settings.login_form = GaeGoogleAccount()
 
+auth.settings.table_user = db.define_table('auth_user',    
+    Field('first_name', length=512,default=''),
+    Field('last_name', length=512,default=''),
+    Field('email', length=512,default='',
+          requires = [IS_EMAIL(),IS_NOT_IN_DB(db,'auth_user.email')]),
+    Field('employed', 'date', label=T("Employed date")),
+    Field('montly', 'integer', label=T("Montly wage")),
+    Field('password', 'password', readable=False,
+          label='Password',
+          requires=CRYPT(auth.settings.hmac_key)),
+    Field('registration_key', length=512,
+          writable=False, readable=False,default=''),
+    Field('reset_password_key', length=512,
+          writable=False, readable=False, default=''))
+
 mail.settings.server = 'logging' or 'smtp.gmail.com:587'  # your SMTP server
 mail.settings.sender = 'you@gmail.com'         # your email
 mail.settings.login = 'username:password'      # your credentials or None
