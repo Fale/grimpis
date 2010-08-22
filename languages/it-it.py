@@ -204,7 +204,7 @@
 'Menu Model': 'Medoello menu',
 'Mexico': 'Messico',
 'Micronesia': 'Micronesia',
-'Mobile': 'Mobile',
+'Mobile': 'Cellulare',
 'Moldova': 'Moldova',
 'Monaco': 'Monaco',
 'Mongolia': 'Mongolia',
