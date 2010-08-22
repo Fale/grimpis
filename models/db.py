@@ -145,7 +145,7 @@ db.define_table('works',
 db.works.name.label=T("Name")
 db.works.customer.label=T("Customer")
 db.works.customer.requires=IS_IN_DB(db,'customers.id','customers.name')
-db.works.description.label=T("description")
+db.works.description.label=T("Description")
 db.works.assign_date.label=T("Assigned")
 db.works.due_to_date.label=T("Due To")
 db.works.status.label=T("Status")
