@@ -328,6 +328,7 @@
 'User': 'Utente',
 'User %(id)s Logged-in': 'User %(id)s Logged-in',
 'User %(id)s Logged-out': 'User %(id)s Logged-out',
+'User %(id)s Profile updated': 'User %(id)s Profile updated',
 'User %(id)s Registered': 'User %(id)s Registered',
 'User ID': 'ID utente',
 'Username': 'Nome utente',

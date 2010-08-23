@@ -59,6 +59,7 @@ mail.settings.sender = 'you@gmail.com'         # your email
 mail.settings.login = 'username:password'      # your credentials or None
 
 auth.settings.hmac_key = 'sha512:79799e9f-a589-4faf-8a4a-ffa8e67a7674'   # before define_tables()
+auth.settings.create_user_groups = False
 auth.define_tables()                           # creates all needed tables
 auth.settings.mailer = mail                    # for user email verification
 auth.settings.registration_requires_verification = False
@@ -175,19 +176,19 @@ db.hours.finish.label=T("Finishing time")
 db.hours.note.label=T("Notes")
 
 ###DEFAULT VALUES
-#if not db(db.auth_group.id>0).count():
-#    admin=auth.add_group('admin', 'can access to all actions')
-#    auth.add_permission(admin, 'admin')
-#    auth.add_permission(admin, 'manager')
-#    auth.add_permission(admin, 'hr')
-#    auth.add_permission(admin, 'crew')
-#    manager=auth.add_group('manager', 'can access to managerial actions')
-#    auth.add_permission(manager, 'manager')
-#    auth.add_permission(manager, 'crew')
-#    hr=auth.add_group('hr', 'can access to all human resources action')
-#    auth.add_permission(hr, 'hr')
-#    auth.add_permission(hr, 'crew')
-#    crew=auth.add_group('crew', 'can access to all basic action')
-#    auth.add_permission(crew, 'crew')
-#if not db(db.auth_membership.id>0).count():
-#    auth.add_membership(1, 1)
+if not db(db.auth_group.id>0).count():
+    admin=auth.add_group('admin', 'can access to all actions')
+    auth.add_permission(admin, 'admin')
+    auth.add_permission(admin, 'manager')
+    auth.add_permission(admin, 'hr')
+    auth.add_permission(admin, 'crew')
+    manager=auth.add_group('manager', 'can access to managerial actions')
+    auth.add_permission(manager, 'manager')
+    auth.add_permission(manager, 'crew')
+    hr=auth.add_group('hr', 'can access to all human resources action')
+    auth.add_permission(hr, 'hr')
+    auth.add_permission(hr, 'crew')
+    crew=auth.add_group('crew', 'can access to all basic action')
+    auth.add_permission(crew, 'crew')
+if not db(db.auth_membership.id>0).count():
+    auth.add_membership(1, 1)
