@@ -246,7 +246,7 @@
 'Poland': 'Poland',
 'Portugal': 'Portogallo',
 'Powered by': 'PCreato da',
-'Powered by Fabio Alessandro Locati.': 'Creato da Fabio Alessandro Locati.',
+'Powered by Fabio Alessandro Locati': 'Creato da Fabio Alessandro Locati',
 'Puerto Rico': 'Puerto Rico',
 'Qatar': 'Qatar',
 'Query:': 'Query:',
