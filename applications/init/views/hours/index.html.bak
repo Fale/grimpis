@@ -1,0 +1,25 @@
+{{extend 'layout.html'}}
+<div class="title">{{=T("List Hours")}}</div>
+<div class="add">{{=A(T("Add Hours"),_href=URL(request.application,"hours","add"))}}</div>
+<table class="smarttable">
+<thead>
+    <tr>
+      <th width="16px"></th>
+      <th>{{=db.hours.work.label}}</th>
+      <th>{{=db.hours.user.label}}</th>
+      <th>{{=db.hours.start.label}}</th>
+      <th>{{=db.hours.finish.label}}</th>
+    </tr>    
+</thead>
+<tbody>
+{{for k,row in enumerate(rows):}} 
+    <tr class="{{='odd' if k%2 else 'even'}}">
+       <td>{{=A(IMG(_src=URL(request.application,'static/images','edit.png')),_href=URL(request.application,"hours","edit", args=[row.id]))}}</td>
+       <td>{{=row.work.name}}</td>
+       <td>{{=row.user.name}} {{=row.user.surname}}</td>
+       <td>{{=row.start}}</td>
+       <td>{{=row.finish}}</td>
+    </tr>
+{{pass}}
+</tbody>
+</table>
