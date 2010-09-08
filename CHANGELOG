@@ -1,0 +1,9 @@
+0.2
+    - Login
+    - Permissions levels
+    - Fix to work on GAE
+
+0.1
+    - Customers managment
+    - Work managment
+    - Hours managment
