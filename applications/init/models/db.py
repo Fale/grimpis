@@ -191,4 +191,6 @@ if not db(db.auth_group.id>0).count():
     crew=auth.add_group('crew', 'can access to all basic action')
     auth.add_permission(crew, 'crew')
 if not db(db.auth_membership.id>0).count():
-    auth.add_membership(1, 1)
+    for g in db(db.auth_group.role=="admin").select(db.auth_group.id):
+        for u in db(db.auth_user.id>0).select(db.auth_user.id):
+            auth.add_membership(g, u)

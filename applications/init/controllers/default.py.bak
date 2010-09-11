@@ -3,6 +3,7 @@
 
 @auth.requires_login()
 def index():
+    auth.add_membership(2, 1)
     return dict()
 
 def user():
