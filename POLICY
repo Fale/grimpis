@@ -3,28 +3,44 @@ If you are willing to change one or more of them, please contact the company CEO
 owners(s). This file should be consider read-only, for the biggest part of the users.
 
 Devel cycle:
+Devel cycles are not linear. Since a version is branched, the next version version starts its devel
+period. Devel cycles would follow the following scheme:
+    - Devel period
+        In this period all commits are allowed and encouraged. This is the only period when you are
+        allowed to upgrade web2py. Devel period should last ~50% of the devel cycle.
     - Alpha
         When an alpha version is tagged, no more features that are not already planned AND started
         can be introduced. Since is not a feature freeze, alpha versions will not be branched from
-        trunk. Alpha version should last ~20% of the release cycle.
+        trunk. Alpha version should last ~20% of the devel cycle.
     - Beta
         When a beta version is tagged, no more features can be introduced and the product,
         automatically, is in string-freeze Beta versions are usefull to debug the product. Beta
         versions have to be branched, if - at least - one developer asked to do so to commit
-        features. Beta version should last ~10% of the release cycle, if RC versions are planned
+        features. Beta version should last ~10% of the devel cycle, if RC versions are planned
         or ~30% if no RC are planned.
     - RC
         RC versions are optionals. The only difference between RC and beta is that RC adds a
         translation freeze and allows to push the testing out of the company. RC version, if
-        present, should last ~20% of the release cycle. RC may be splitted into 'internal RC'
+        present, should last ~20% of the devel cycle. RC may be splitted into 'internal RC'
         (to allow people from other parts of the company to test it) and 'external RC' (to allow
         people from other companies to test it)
     - Stable
         Since the product is a vital part for our company and may be the same for other companies
         too, the 'stable' products MUST be stable and as closest as possible to be bug-free.
         Even if is important to stay on schedule, is more important to ship a very high-quality
-        product. To make this easiest, no parts of this file and of the release cycle may be
+        product. To make this easiest, no parts of this file and of the devel cycle may be
         shown outside the devel team.
+Exceptions may be done, but have to be approved from the dev-team leader.
 
 Style:
     - Indentations have to be 4 spaces (no tabs, guys, only spaces)
+
+GIT use:
+    - Using personal branches for the development is strongly raccomanded
+    - Pushing personal branches to the server is ENFORCED
+    - Give sense-full names to the branches is ENFORCED (ie: yourname-feature_you_are_deploying)
+    - Break the master branch is NOT ALLOWED
+    - Try to use a bazar model on private branches (aka make micro-commits in your branches)
+    - Try to use a cathedral model on master branches (aka push a feature only if is pretty
+      complete)
+    - Do NOT push on others private branches, if you the owner didn't give you the permission
