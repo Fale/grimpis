@@ -1,3 +1,0 @@
-{{extend 'layout.html'}}
-<h1>T("Edit Customer Informations")</h1>
-{{=form}}

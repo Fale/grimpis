@@ -1,4 +1,0 @@
-{{extend 'layout.html'}}
-T("Welcome in Grimp IS.")
-
-{{=MENU(response.menu)}}
