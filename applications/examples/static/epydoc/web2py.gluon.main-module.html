@@ -288,7 +288,7 @@ Contains:
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.main-module.html#appfactory" class="summary-sig-name">appfactory</a>(<span class="summary-sig-arg">wsgiapp</span>=<span class="summary-sig-default">&lt;function wsgibase at 0x11f5398&gt;</span>,
+          <td><span class="summary-sig"><a href="web2py.gluon.main-module.html#appfactory" class="summary-sig-name">appfactory</a>(<span class="summary-sig-arg">wsgiapp</span>=<span class="summary-sig-default">&lt;function wsgibase at 0x12c2758&gt;</span>,
         <span class="summary-sig-arg">logfilename</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">httpserver.log</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">profilerfilename</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">profiler.log</code><code class="variable-quote">'</code></span>)</span><br />
       generates a wsgi application that does logging and profiling and calls
@@ -344,14 +344,28 @@ wsgibase
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="regex_client"></a><span class="summary-name">regex_client</span> = <code title="re.compile(r'[\w-:]+(\.[\w-]+)*\.?')">re.compile(r'<code class="re-group">[</code>\w-:<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">(</code>\.<code class="re-group">[</code>\w-<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">)</code><code class="re-op">*</code>\.<code class="re-op">?</code>')</code>
+        <a name="web2py_path"></a><span class="summary-name">web2py_path</span> = <code title="'/home/mdipierro/web2py'"><code class="variable-quote">'</code><code class="variable-string">/home/mdipierro/web2py</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="web2py_path"></a><span class="summary-name">web2py_path</span> = <code title="'/home/mdipierro/web2py'"><code class="variable-quote">'</code><code class="variable-string">/home/mdipierro/web2py</code><code class="variable-quote">'</code></code>
+        <a name="logpath"></a><span class="summary-name">logpath</span> = <code title="'/home/mdipierro/web2py/logging.conf'"><code class="variable-quote">'</code><code class="variable-string">/home/mdipierro/web2py/logging.conf</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="logger"></a><span class="summary-name">logger</span> = <code title="logging.getLogger(&quot;web2py&quot;)">logging.getLogger(&quot;web2py&quot;)</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="regex_client"></a><span class="summary-name">regex_client</span> = <code title="re.compile(r'[\w-:]+(\.[\w-]+)*\.?')">re.compile(r'<code class="re-group">[</code>\w-:<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">(</code>\.<code class="re-group">[</code>\w-<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">)</code><code class="re-op">*</code>\.<code class="re-op">?</code>')</code>
     </td>
   </tr>
 <tr class="private">
@@ -365,8 +379,8 @@ wsgibase
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="web2py_version"></a><span class="summary-name">web2py_version</span> = <code title="'''Version 1.83.2 (2010-08-15 02:10:01)
-'''"><code class="variable-quote">'</code><code class="variable-string">Version 1.83.2 (2010-08-15 02:10:01)\n</code><code class="variable-quote">'</code></code>
+        <a name="web2py_version"></a><span class="summary-name">web2py_version</span> = <code title="'''Version 1.85.1 (2010-09-15 08:43:12)
+'''"><code class="variable-quote">'</code><code class="variable-string">Version 1.85.1 (2010-09-15 08:43:12)\n</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr class="private">
@@ -580,7 +594,7 @@ The naming conventions are:
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">appfactory</span>(<span class="sig-arg">wsgiapp</span>=<span class="sig-default">&lt;function wsgibase at 0x11f5398&gt;</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">appfactory</span>(<span class="sig-arg">wsgiapp</span>=<span class="sig-default">&lt;function wsgibase at 0x12c2758&gt;</span>,
         <span class="sig-arg">logfilename</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">httpserver.log</code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">profilerfilename</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">profiler.log</code><code class="variable-quote">'</code></span>)</span>
   </h3>
@@ -710,7 +724,7 @@ re.compile(r'<code class="re-flags">(?x)</code><code class="re-group">(</code>^<
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Sun Aug 15 08:16:20 2010
+    Generated by Epydoc 3.0beta1 on Wed Sep 15 14:47:42 2010
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

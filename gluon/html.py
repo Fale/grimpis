@@ -18,6 +18,8 @@ import sanitizer
 import rewrite
 import itertools
 import decoder
+import copy_reg
+import marshal
 from HTMLParser import HTMLParser
 from htmlentitydefs import name2codepoint
 from contrib.markmin import render
@@ -136,8 +138,8 @@ def URL(
 
     example::
 
-        >>> URL(a='a', c='c', f='f', args=['x', 'y', 'z'],
-        ...     vars={'p':1, 'q':2}, anchor='1')
+        >>> str(URL(a='a', c='c', f='f', args=['x', 'y', 'z'],
+        ...     vars={'p':1, 'q':2}, anchor='1'))
         '/a/c/f/x/y/z#1?q=2&p=1'
 
     generates a url \"/a/c/f\" corresponding to application a, controller c
@@ -201,8 +203,8 @@ def URL(
 
     if regex_crlf.search(url):
         raise SyntaxError, 'CRLF Injection Detected'
-    return rewrite.filter_out(url, env)
-    
+    return XML(rewrite.filter_out(url, env))
+
 def _gURL(request):
     """
     A proxy function for URL which contains knowledge
@@ -304,6 +306,27 @@ class XML(XmlComponent):
     def __str__(self):
         return self.xml()
 
+    def __add__(self,other):
+        return '%s%s' % (self,other)
+
+    def __radd__(self,other):
+        return '%s%s' % (other,self)
+
+    def __getattr__(self,name):
+        return getattr(str(self),name)
+
+    def __getitem__(self,i):
+        return str(self)[i]
+
+    def __getslice__(self,i,j):
+        return str(self)[i:j]
+
+    def __iter__(self):
+        for c in str(self): yield c
+
+    def __len__(self):
+        return len(str(self))
+
     def flatten(self,render=None):
         """
         return the text stored by the XML object rendered by the render function
@@ -318,6 +341,13 @@ class XML(XmlComponent):
         another options could be TAG(self.text).elements(*args,**kargs)
         """
         return []
+
+### important to allow safe session.flash=T(....)                                                             
+def XML_unpickle(data):
+    return marshal.loads(data)
+def XML_pickle(data):
+    return XML_unpickle, (marshal.dumps(str(data)),)
+copy_reg.pickle(XML, XML_pickle, XML_unpickle)
 
 
 

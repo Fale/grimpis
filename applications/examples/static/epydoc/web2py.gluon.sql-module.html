@@ -349,6 +349,54 @@ the records are identified by the where=Query(...) object.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="bar_encode"></a><span class="summary-sig-name">bar_encode</span>(<span class="summary-sig-arg">items</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.sql-pysrc.html#bar_encode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="bar_decode_integer"></a><span class="summary-sig-name">bar_decode_integer</span>(<span class="summary-sig-arg">value</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.sql-pysrc.html#bar_decode_integer">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="bar_decode_string"></a><span class="summary-sig-name">bar_decode_string</span>(<span class="summary-sig-arg">value</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.sql-pysrc.html#bar_decode_string">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="sql_represent"></a><span class="summary-sig-name">sql_represent</span>(<span class="summary-sig-arg">obj</span>,
         <span class="summary-sig-arg">fieldtype</span>,
         <span class="summary-sig-arg">dbname</span>,
@@ -637,6 +685,13 @@ the records are identified by the where=Query(...) object.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a name="logger"></a><span class="summary-name">logger</span> = <code title="logging.getLogger(&quot;web2py.sql&quot;)">logging.getLogger(&quot;web2py.sql&quot;)</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a name="table_field"></a><span class="summary-name">table_field</span> = <code title="re.compile(r'[\w_]+\.[\w_]+')">re.compile(r'<code class="re-group">[</code>\w_<code class="re-group">]</code><code class="re-op">+</code>\.<code class="re-group">[</code>\w_<code class="re-group">]</code><code class="re-op">+</code>')</code>
     </td>
   </tr>
@@ -667,6 +722,13 @@ the records are identified by the where=Query(...) object.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a name="string_unpack"></a><span class="summary-name">string_unpack</span> = <code title="re.compile(r'(?&lt;!\|)\|(?!\|)')">re.compile(r'<code class="re-group">(?&lt;!</code>\|<code class="re-group">)</code>\|<code class="re-group">(?!</code>\|<code class="re-group">)</code>')</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a name="drivers"></a><span class="summary-name">drivers</span> = <code title="['SQLite3', 'PostgreSQL']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">SQLite3</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">PostgreSQL</code><code class="variable-quote">'</code><code class="variable-group">]</code></code>
     </td>
   </tr>
@@ -681,7 +743,14 @@ the records are identified by the where=Query(...) object.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="sql_locker"></a><span class="summary-name">sql_locker</span> = <code title="thread.allocate_lock()">thread.allocate_lock()</code>
+        <a name="sql_locker"></a><span class="summary-name">sql_locker</span> = <code title="&lt;_RLock(None, 0)&gt;">&lt;_RLock(None, 0)&gt;</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="thread"></a><span class="summary-name">thread</span> = <code title="threading.local()">threading.local()</code>
     </td>
   </tr>
 <tr class="private">
@@ -1080,7 +1149,7 @@ re.compile(r'<code class="re-group">(?P&lt;</code><code class="re-ref">table</co
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Sun Aug 15 08:16:20 2010
+    Generated by Epydoc 3.0beta1 on Wed Sep 15 14:47:43 2010
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

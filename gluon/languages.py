@@ -12,6 +12,8 @@ import re
 import cgi
 import portalocker
 import logging
+import marshal
+import copy_reg
 from fileutils import listdir
 from settings import settings
 from cfs import getcfs
@@ -104,11 +106,15 @@ class lazyT(object):
     never to be called explicitly, returned by translator.__call__
     """
 
+    m = None
+    s = None
+    T = None
+
     def __init__(
         self,
         message,
-        symbols={},
-        T=None,
+        symbols = {},
+        T = None,
         ):
         self.m = message
         self.s = symbols
@@ -126,20 +132,42 @@ class lazyT(object):
     def __ne__(self, other):
         return self.T.translate(self.m, self.s) != other
 
+    def __add__(self, other):
+        return '%s%s' % (self, other)
+
+    def __radd__(self, other):
+        return '%s%s' % (other, self)
+
+    def __getattr__(self, name):
+        return getattr(str(self),name)
+
+    def __getitem__(self, i):
+        return str(self)[i]
+
+    def __getslice__(self, i, j):
+        return str(self)[i:j]
+
+    def __iter__(self):
+        for c in str(self): yield c
+
+    def __len__(self):
+        return len(str(self))
+
     def xml(self):
         return cgi.escape(str(self))
 
-    def encode(self,*a,**b):
-        return str(self).encode(*a,**b)
+    def encode(self, *a, **b):
+        return str(self).encode(*a, **b)
 
-    def decode(self,*a,**b):
-        return str(self).decode(*a,**b)
+    def decode(self, *a, **b):
+        return str(self).decode(*a, **b)
 
     def read(self):
         return str(self)
 
-    def __mod__(self,symbols):
-        return self.T.translate(self.m,symbols)
+    def __mod__(self, symbols):
+        return self.T.translate(self.m, symbols)
+
 
 class translator(object):
 
@@ -170,16 +198,16 @@ class translator(object):
         self.lazy = True
 
     def set_current_languages(self, *languages):
-        if len(languages)==1 and isinstance(languages[0], (tuple,list)):
-            languages=languages[0]
+        if len(languages) == 1 and isinstance(languages[0], (tuple, list)):
+            languages = languages[0]
         self.current_languages = languages
         self.force(self.http_accept_language)
 
     def force(self, *languages):
-        if not languages or languages[0]==None:
+        if not languages or languages[0] == None:
             languages = []
-        if len(languages)==1 and isinstance(languages[0], (str, unicode)):
-            languages=languages[0]
+        if len(languages) == 1 and isinstance(languages[0], (str, unicode)):
+            languages = languages[0]
         if languages:
             if isinstance(languages, (str, unicode)):
                 accept_languages = languages.split(';')
@@ -218,10 +246,10 @@ class translator(object):
         T(' hello world ## token') -> 'hello world'
         T('hello ## world ## token') -> 'hello ## world'
         """
-        tokens = message.rsplit('##',1)
-        if len(tokens)==2:
+        tokens = message.rsplit('##', 1)
+        if len(tokens) == 2:
             tokens[0] = tokens[0].strip()
-            message = tokens[0]+'##'+tokens[1].strip()
+            message = tokens[0] + '##' + tokens[1].strip()
         mt = self.t.get(message, None)
         if mt == None:
             self.t[message] = mt = tokens[0]
@@ -252,15 +280,21 @@ def findT(path, language='en-us'):
         for item in items:
             try:
                 msg = eval(item)
-                tokens = msg.rsplit('##',1)
-                if len(tokens)==2:
-                    msg = tokens[0].strip()+'##'+tokens[1].strip()
+                tokens = msg.rsplit('##', 1)
+                if len(tokens) == 2:
+                    msg = tokens[0].strip() + '##' + tokens[1].strip()
                 if msg and not msg in sentences:
                     sentences[msg] = msg
             except:
                 pass
     write_dict(filename, sentences)
 
+### important to allow safe session.flash=T(....)
+def lazyT_unpickle(data):
+    return marshal.loads(data)
+def lazyT_pickle(data):
+    return lazyT_unpickle, (marshal.dumps(str(data)),)
+copy_reg.pickle(lazyT, lazyT_pickle, lazyT_unpickle)
 
 def update_all_languages(application_path):
     path = os.path.join(application_path, 'languages/')
@@ -268,7 +302,7 @@ def update_all_languages(application_path):
         findT(application_path, language[:-3])
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     import doctest
     doctest.testmod()
 

@@ -27,7 +27,7 @@ import time
 import types
 import cPickle
 import datetime
-import thread
+import threading
 import cStringIO
 import csv
 import copy
@@ -44,6 +44,8 @@ from utils import md5_hash, web2py_uuid
 from serializers import json
 from http import HTTP
 
+logger = logging.getLogger("web2py.sql")
+
 # internal representation of tables with field
 #  <table>.<field>, tables and fields may only be [a-zA-Z0-0_]
 
@@ -51,6 +53,7 @@ table_field = re.compile('[\w_]+\.[\w_]+')
 oracle_fix = re.compile("[^']*('[^']*'[^']*)*\:(?P<clob>CLOB\('([^']+|'')*'\))")
 regex_content = re.compile('(?P<table>[\w\-]+)\.(?P<field>[\w\-]+)\.(?P<uuidkey>[\w\-]+)\.(?P<name>\w+)\.\w+$')
 regex_cleanup_fn = re.compile('[\'"\s;]+')
+string_unpack=re.compile('(?<!\|)\|(?!\|)')
 
 # list of drivers will be built on the fly
 # and lists only what is available
@@ -63,68 +66,69 @@ except:
         from sqlite3 import dbapi2 as sqlite3
         drivers.append('SQLite3')
     except:
-        logging.debug('no sqlite3 or pysqlite2.dbapi2 driver')
+        logger.debug('no sqlite3 or pysqlite2.dbapi2 driver')
 
 try:
     import MySQLdb
     drivers.append('MySQL')
 except:
-    logging.debug('no MySQLdb driver')
+    logger.debug('no MySQLdb driver')
 
 try:
     import psycopg2
     drivers.append('PostgreSQL')
 except:
-    logging.debug('no psycopg2 driver')
+    logger.debug('no psycopg2 driver')
 
 try:
     import cx_Oracle
     drivers.append('Oracle')
 except:
-    logging.debug('no cx_Oracle driver')
+    logger.debug('no cx_Oracle driver')
 
 try:
     import pyodbc
     drivers.append('MSSQL/DB2')
 except:
-    logging.debug('no MSSQL/DB2 driver')
+    logger.debug('no MSSQL/DB2 driver')
 
 try:
     import kinterbasdb
     drivers.append('Interbase')
 except:
-    logging.debug('no kinterbasdb driver')
+    logger.debug('no kinterbasdb driver')
 
 try:
     import informixdb
     drivers.append('Informix')
-    logging.warning('Informix support is experimental')
+    logger.warning('Informix support is experimental')
 except:
-    logging.debug('no informixdb driver')
+    logger.debug('no informixdb driver')
 
 try:
     from com.ziclix.python.sql import zxJDBC
     import java.sql
     from org.sqlite import JDBC
     drivers.append('zxJDBC')
-    logging.warning('zxJDBC support is experimental')
+    logger.warning('zxJDBC support is experimental')
     is_jdbc = True
 except:
-    logging.debug('no zxJDBC driver')
+    logger.debug('no zxJDBC driver')
     is_jdbc = False
 
 try:
     import ingresdbi
     drivers.append('Ingres')
 except:
-    logging.debug('no Ingres driver')
+    logger.debug('no Ingres driver')
     # NOTE could try JDBC.......
 
 
 import portalocker
 import validators
 
-sql_locker = thread.allocate_lock()
+sql_locker = threading.RLock()
+thread = threading.local()
 
 INGRES_SEQNAME='ii***lineitemsequence' # NOTE invalid database object name (ANSI-SQL wants this form of name to be a delimited identifier)
 def gen_ingres_sequencename(table_name):
@@ -466,9 +470,9 @@ def sqlhtml_validators(field):
         row=r[id]
         if not row:
             return id
-        elif hasattr(r,'_format') and isinstance(r._format,str):
+        elif hasattr(r, '_format') and isinstance(r._format,str):
             return r._format % row
-        elif hasattr(r,'_format') and callable(r._format):
+        elif hasattr(r, '_format') and callable(r._format):
             return r._format(row)
         else:
             return id
@@ -496,7 +500,7 @@ def sqlhtml_validators(field):
             field_type[10:] in field._db.tables:
         referenced = field._db[field_type[10:]]
         field.represent = lambda id, r=referenced, f=ff: f(r,id)
-        if hasattr(referenced,'_format') and referenced._format:
+        if hasattr(referenced, '_format') and referenced._format:
             requires = validators.IS_IN_DB(field._db,referenced.id,
                                            referenced._format)
             if field.unique:
@@ -509,7 +513,7 @@ def sqlhtml_validators(field):
             field_type[15:] in field._db.tables:
         referenced = field._db[field_type[15:]]
         field.represent = lambda ids, r=referenced, f=ff: (ids and ', '.join(f(r,id) for id in ids) or '')
-        if hasattr(referenced,'_format') and referenced._format:
+        if hasattr(referenced, '_format') and referenced._format:
             requires = validators.IS_IN_DB(field._db,referenced.id,
                                            referenced._format,multiple=True)
             if field.unique:
@@ -517,7 +521,7 @@ def sqlhtml_validators(field):
             return requires
     if field.unique:
         requires.insert(0,validators.IS_NOT_IN_DB(field._db,field))
-    sff=['in','do','da','ti','de']
+    sff = ['in', 'do', 'da', 'ti', 'de']
     if field.notnull and not field_type[:2] in sff:
         requires.insert(0,validators.IS_NOT_EMPTY())
     elif not field.notnull and field_type[:2] in sff and requires:
@@ -525,15 +529,24 @@ def sqlhtml_validators(field):
     return requires
 
 def bar_escape(item):
-    return str(item).replace('|','||')
+    return str(item).replace('|', '||')
+
+def bar_encode(items):
+    return '|%s|' % '|'.join(bar_escape(item) for item in items if str(item).strip())
+
+def bar_decode_integer(value):
+    return [int(x) for x in value.split('|') if x.strip()]
+
+def bar_decode_string(value):
+    return [x.replace('||','|') for x in string_unpack.split(value) if x.strip()]
 
 def sql_represent(obj, fieldtype, dbname, db_codec='UTF-8'):
     if type(obj) in (types.LambdaType, types.FunctionType):
         obj = obj()
     if isinstance(obj, (list, tuple)):
-        obj = '|%s|' % '|'.join(bar_escape(item) for item in obj)
+        obj = bar_encode(obj)
     if isinstance(obj, (Expression, Field)):
-        return obj
+        return str(obj)
     if isinstance(fieldtype, SQLCustomType):
         return fieldtype.encoder(obj)
     if obj is None:
@@ -584,7 +597,7 @@ def sql_represent(obj, fieldtype, dbname, db_codec='UTF-8'):
         else:
             obj = str(obj)
         if dbname in ['oracle', 'informix']:
-            return "to_date('%s','yyyy-mm-dd')" % obj
+            return "to_date('%s', 'yyyy-mm-dd')" % obj
     elif fieldtype == 'datetime':
         if isinstance(obj, datetime.datetime):
             if dbname == 'db2':
@@ -738,14 +751,16 @@ class Row(dict):
         d = dict(self)
         for k in copy.copy(d.keys()):
             v=d[k]
-            if isinstance(v,Row):
+            if d[k]==None:
+                continue
+            elif isinstance(v,Row):
                 d[k]=v.as_dict()
             elif isinstance(v,Reference):
                 d[k]=int(v)
             elif isinstance(v, (datetime.date, datetime.datetime, datetime.time)):
                 if datetime_to_str:
                     d[k] = v.isoformat().replace('T',' ')[:19]
-            elif not isinstance(v,(str,unicode,int,long,float,bool)):
+            elif not isinstance(v,(str,unicode,int,long,float,bool,list)):
                 del d[k]
         return d
 
@@ -776,49 +791,34 @@ class SQLDB(dict):
 
     """
 
-    # ## this allows gluon to comunite a folder for this thread
-
-    _folders = {}
-    _connection_pools = {}
-    _instances = {}
+    # ## this allows gluon to set a folder for this thread
+    _connection_pools={}
 
     @staticmethod
-    def _set_thread_folder(folder):
-        sql_locker.acquire()
-        SQLDB._folders[thread.get_ident()] = folder
-        sql_locker.release()
+    def set_folder(folder):
+        thread.folder=folder
 
     # ## this allows gluon to commit/rollback all dbs in this thread
 
     @staticmethod
     def close_all_instances(action):
         """ to close cleanly databases in a multithreaded environment """
-
-        sql_locker.acquire()
-        pid = thread.get_ident()
-        if pid in SQLDB._folders:
-            del SQLDB._folders[pid]
-        if pid in SQLDB._instances:
-            instances = SQLDB._instances[pid]
-            while instances:
-                instance = instances.pop()
-                sql_locker.release()
-                action(instance)
+        if not hasattr(thread,'instances'):
+            return
+        while thread.instances:
+            instance = thread.instances.pop()
+            action(instance)
+            # ## if you want pools, recycle this connection
+            really = True
+            if instance._pool_size:
                 sql_locker.acquire()
-
-                # ## if you want pools, recycle this connection
-                really = True
-                if instance._pool_size:
-                    pool = SQLDB._connection_pools[instance._uri]
-                    if len(pool) < instance._pool_size:
-                        pool.append(instance._connection)
-                        really = False
-                if really:
-                    sql_locker.release()
-                    instance._connection.close()
-                    sql_locker.acquire()
-            del SQLDB._instances[pid]
-        sql_locker.release()
+                pool = SQLDB._connection_pools[instance._uri]
+                if len(pool) < instance._pool_size:
+                    pool.append(instance._connection)                    
+                    really = False
+                sql_locker.release()
+            if really:
+                instance._connection.close()
         return
 
     @staticmethod
@@ -837,7 +837,7 @@ class SQLDB(dict):
         if not instances:
             return
         instances = enumerate(instances)
-        thread_key = '%s.%i' % (socket.gethostname(), thread.get_ident())
+        thread_key = '%s.%i' % (socket.gethostname(), threading.currentThread())
         keys = ['%s.%i' % (thread_key, i) for (i,db) in instances]
         for (i, db) in instances:
             if not db._dbname in ['postgres', 'mysql', 'firebird']:
@@ -859,7 +859,7 @@ class SQLDB(dict):
                     db._execute("XA ROLLBACK;")
                 elif db._dbname == 'firebird':
                     db.rollback()
-            raise Exception, 'failure to commit distributed transaction'
+            raise RuntimeError, 'failure to commit distributed transaction'
         else:
             for (i, db) in instances:
                 if db._dbname == 'postgres':
@@ -879,10 +879,10 @@ class SQLDB(dict):
             return
         uri = self._uri
         sql_locker.acquire()
-        if not uri in self._connection_pools:
-            self._connection_pools[uri] = []
-        if self._connection_pools[uri]:
-            self._connection = self._connection_pools[uri].pop()
+        if not uri in SQLDB._connection_pools:
+            SQLDB._connection_pools[uri] = []
+        if SQLDB._connection_pools[uri]:
+            self._connection = SQLDB._connection_pools[uri].pop()
             sql_locker.release()
         else:
             sql_locker.release()
@@ -902,19 +902,16 @@ class SQLDB(dict):
         self._fake_migrate = fake_migrate
         self['_lastsql'] = ''
         self.tables = SQLCallableList()
-        pid = thread.get_ident()
+        pid = threading.currentThread()
 
         # Check if there is a folder for this thread else use ''
 
         if folder:
             self._folder = folder
+        elif hasattr(thread,'folder'):
+            self._folder = thread.folder
         else:
-            sql_locker.acquire()
-            if pid in self._folders:
-                self._folder = self._folders[pid]
-            else:
-                self._folder = self._folders[pid] = ''
-            sql_locker.release()
+            self._folder = thread.folder = ''
 
         # Now connect to database
 
@@ -1045,7 +1042,7 @@ class SQLDB(dict):
                     if not dsn:
                         raise SyntaxError, 'DSN required'
                 except SyntaxError, e:
-                    logging.error('NdGpatch error')
+                    logger.error('NdGpatch error')
                     raise e
                 cnxn = 'DSN=%s' % dsn
             else:
@@ -1268,13 +1265,9 @@ class SQLDB(dict):
         self._translator = SQL_DIALECTS[self._dbname]
 
         # ## register this instance of SQLDB
-
-        sql_locker.acquire()
-        if not pid in self._instances:
-            self._instances[pid] = []
-        self._instances[pid].append(self)
-        sql_locker.release()
-        pass
+        if not hasattr(thread,'instances'):
+            thread.instances = []
+        thread.instances.append(self)
 
     def check_reserved_keyword(self, name):
         """
@@ -1354,8 +1347,8 @@ class SQLDB(dict):
         t._create_references()
 
         if migrate:
-            sql_locker.acquire()
             try:
+                sql_locker.acquire()
                 t._create(migrate=migrate, fake_migrate=fake_migrate)
             finally:
                 sql_locker.release()
@@ -1509,7 +1502,7 @@ class Reference(int):
         if not self._record:
             self._record = self._table[int(self)]
             if not self._record:
-                raise Exception, "undefined record"
+                raise RuntimeError, "Using a recursive select but encountered a broken reference"
 
     def __getattr__(self,key):
         if key == 'id':
@@ -1641,14 +1634,14 @@ class Table(dict):
         else:
             return dict.__getitem__(self, str(key))
 
-    def __call__(self, key=None, **kwargs):
-        if key!=None:
-            if isinstance(key, Query):
-                record = self._db(key).select(limitby=(0,1)).first()
-            elif not str(key).isdigit():
+    def __call__(self, id=None, **kwargs):
+        if id!=None:
+            if isinstance(id, Query):
+                record = self._db(id).select(limitby=(0,1)).first()
+            elif not str(id).isdigit():
                 record = None
             else:
-                record = self._db(self.id == key).select(limitby=(0,1)).first()
+                record = self._db(self.id == id).select(limitby=(0,1)).first()
             if record:
                 for k,v in kwargs.items():
                     if record[k]!=v: return None
@@ -1735,8 +1728,10 @@ class Table(dict):
             else:
                 ftype = self._db._translator[field.type]\
                      % dict(length=field.length)
-            if not isinstance(field.type, SQLCustomType) and not field.type.startswith('id') and not field.type.startswith('reference'):
-                if field.notnull:
+            if not isinstance(field.type, SQLCustomType) and \
+                    not field.type.startswith('id') and \
+                    not field.type.startswith('reference'):
+                if field.notnull:                    
                     ftype += ' NOT NULL'
                 if field.unique:
                     ftype += ' UNIQUE'
@@ -1744,14 +1739,18 @@ class Table(dict):
             # add to list of fields
             sql_fields[field.name] = ftype
 
-            if field.default:
-                sql_fields_aux[field.name] = ftype.replace('NOT NULL',
-                        self._db._translator['notnull']
-                         % dict(default=sql_represent(field.default,
-                        field.type, self._db._dbname, self._db._db_codec)))
-            else:
-                sql_fields_aux[field.name] = ftype
+            if field.default!=None:
+                # caveat: sql_fields and sql_fields_aux differ for default values
+                # sql_fields is used to trigger migrations and sql_fields_aux
+                # are used for create table
+                # the reason is that we do not want to trigger a migration simply
+                # because a default value changes
+                ftype = ftype.replace('NOT NULL',
+                                      self._db._translator['notnull']
+                                      % dict(default=sql_represent(field.default,
+                                       field.type, self._db._dbname, self._db._db_codec)))
 
+            sql_fields_aux[field.name] = ftype            
             fields.append('%s %s' % (field.name, ftype))
         other = ';'
 
@@ -1823,7 +1822,6 @@ class Table(dict):
                 cPickle.dump(sql_fields, tfile)
                 portalocker.unlock(tfile)
                 tfile.close()
-            if self._dbt:
                 if fake_migrate:
                     logfile.write('faked!\n')
                 else:
@@ -1866,25 +1864,28 @@ class Table(dict):
             new_add = '; ALTER TABLE %s ADD ' % self._tablename
         else:
             new_add = ', ADD '
+
+        fields_changed = False
+        sql_fields_current = copy.copy(sql_fields_old)
         for key in keys:
             if not key in sql_fields_old:
+                sql_fields_current[key] = sql_fields[key]
                 query = ['ALTER TABLE %s ADD %s %s;' % \
                          (self._tablename, key, sql_fields_aux[key].replace(', ', new_add))]
             elif self._db._dbname == 'sqlite':
                 query = None
             elif not key in sql_fields:
+                del sql_fields_current[key]
                 if not self._db._dbname in ('firebird',):
                     query = ['ALTER TABLE %s DROP COLUMN %s;' % (self._tablename, key)]
                 else:
                     query = ['ALTER TABLE %s DROP %s;' % (self._tablename, key)]
-            elif sql_fields[key] != sql_fields_old[key] and \
-                 not (self[key].type.startswith('reference') and \
+            elif sql_fields[key] != sql_fields_old[key] \
+                  and not isinstance(self[key].type, SQLCustomType) \
+                  and not (self[key].type.startswith('reference') and \
                       sql_fields[key].startswith('INT,') and \
                       sql_fields_old[key].startswith('INT NOT NULL,')):
-
-                # ## FIX THIS WHEN DIFFERENCES IS ONLY IN DEFAULT
-                # 2
-
+                sql_fields_current[key] = sql_fields[key]
                 t = self._tablename
                 tt = sql_fields_aux[key].replace(', ', new_add)
                 if not self._db._dbname in ('firebird',):
@@ -1905,6 +1906,7 @@ class Table(dict):
                 query = None
 
             if query:
+                fields_changed = True
                 logfile.write('timestamp: %s\n'
                                % datetime.datetime.today().isoformat())
                 self._db['_lastsql'] = '\n'.join(query)
@@ -1912,24 +1914,30 @@ class Table(dict):
                     logfile.write(sub_query + '\n')
                     if not fake_migrate:
                         self._db._execute(sub_query)
-                        if self._db._dbname in ['mysql', 'oracle', 'firebird']:
+                        # caveat. mysql, oracle and firebird do not allow multiple alter table
+                        # in one transaction so we must commit partial transactions and
+                        # update self._dbt after alter table.
+                        if self._db._dbname in ['mysql', 'oracle', 'firebird']:                            
                             self._db.commit()
+                            tfile = open(self._dbt, 'w')
+                            portalocker.lock(tfile, portalocker.LOCK_EX)
+                            cPickle.dump(sql_fields_current, tfile)
+                            portalocker.unlock(tfile)
+                            tfile.close()
                             logfile.write('success!\n')
                     else:
                         logfile.write('faked!\n')
-                if key in sql_fields:
-                    sql_fields_old[key] = sql_fields[key]
-                else:
-                    del sql_fields_old[key]
-        tfile = open(self._dbt, 'w')
-        portalocker.lock(tfile, portalocker.LOCK_EX)
-        cPickle.dump(sql_fields_old, tfile)
-        portalocker.unlock(tfile)
-        tfile.close()
+
+        if fields_changed and not self._db._dbname in ['mysql', 'oracle', 'firebird']:
+            self._db.commit()
+            tfile = open(self._dbt, 'w')
+            portalocker.lock(tfile, portalocker.LOCK_EX)
+            cPickle.dump(sql_fields_current, tfile)
+            portalocker.unlock(tfile)
+            tfile.close()
 
     def create(self):
         """nothing to do; here for backward compatibility"""
-
         pass
 
     def _drop(self, mode = None):
@@ -2072,36 +2080,49 @@ class Table(dict):
         def fix(field, value, id_map):
             if value == null:
                 value = None
-            elif id_map and field.type.startswith('reference'):
+            elif not isinstance(field.type, SQLCustomType) and field.type.startswith('list:string'):
+                value = bar_decode_string(value)
+            elif not isinstance(field.type, SQLCustomType) and field.type.startswith('list:'):
+                value = bar_decode_integer(value)
+            elif id_map and not isinstance(field.type, SQLCustomType) and field.type.startswith('reference'):
                 try:
                     value = id_map[field.type[9:].strip()][value]
                 except KeyError:
                     pass
             return (field.name, value)
 
+        def is_id(colname):
+            if colname in self:
+                return self[colname].type == 'id'
+            else:
+                return False
+
         for line in reader:
             if not line:
                 break
             if not colnames:
-                colnames = [x[x.find('.') + 1:] for x in line]
-                c = [i for i in xrange(len(line)) if colnames[i] != 'id']
-                cid = [i for i in xrange(len(line)) if colnames[i] == 'id']
-                if cid:
-                    cid = cid[0]
+                colnames = [x.split('.',1)[-1] for x in line][:len(line)]
+                cols, cid = [], []
+                for i,colname in enumerate(colnames):
+                    if is_id(colname):
+                        cid = i
+                    else:
+                        cols.append(i)
+                    if colname == unique:
+                        unique_idx = i
             else:
-                items = [fix(self[colnames[i]], line[i], id_map) for i in c]
+                items = [fix(self[colnames[i]], line[i], id_map) for i in cols]
+                # Validation. Check for duplicate of 'unique' &,
+                # if present, update instead of insert.
                 if not unique or unique not in colnames:
                     new_id = self.insert(**dict(items))
                 else:
-                    # Validation. Check for duplicate of 'unique' &,
-                    # if present, update instead of insert.
-                    for i in c:
-                        if colnames[i] == unique:
-                            _unique = line[i]
-                    query = self._db[self][unique]==_unique
-                    if self._db(query).count():
-                        self._db(query).update(**dict(items))
-                        new_id = self._db(query).select()[0].id
+                    unique_value = line[unique_idx]
+                    query = self._db[self][unique] == unique_value
+                    record = self._db(query).select().first()
+                    if record:
+                        record.update_record(**dict(items))
+                        new_id = record.id
                     else:
                         new_id = self.insert(**dict(items))
                 if id_map and cid != []:
@@ -2572,7 +2593,7 @@ class Expression(object):
         if self.type in ('string', 'text'):
             return Query(self, ' LIKE ', '%s%%' % value)
         else:
-            raise RuntimeError, "Not supported"
+            raise RuntimeError, "startswith used with incompatible field type"
 
     def contains(self, value):
         if self.type in ('string', 'text'):
@@ -2580,7 +2601,7 @@ class Expression(object):
         elif self.type.startswith('list:'):
             return Query(self, ' LIKE ', '%%|%s|%%' % value)
         else:
-            raise RuntimeError, "Not supported"
+            raise RuntimeError, "contains user with incopatible field type"
 
     def with_alias(self,value):
         return Expression(str(self) + ' AS %s' % value,
@@ -2599,7 +2620,7 @@ class Expression(object):
         elif self.type in ['date','time','datetime','double']:
             result_type = 'double'
         else:
-            raise SyntaxError, "subscraction operation not supported for type"
+            raise SyntaxError, "subtraction operation with incompatible field type"
         return Expression('(%s-%s)' % (self, sql_represent(other,
                           self.type, self._db._dbname, self._db._db_codec)),
                           result_type,
@@ -2947,7 +2968,7 @@ class Query(object):
 
     """
     a query object necessary to define a set.
-    t can be stored or can be passed to SQLDB.__call__() to obtain a Set
+    it can be stored or can be passed to SQLDB.__call__() to obtain a Set
 
     Example::
 
@@ -3263,83 +3284,77 @@ excluded + tables_to_merge.keys()])
                     virtualtables.append((tablename,db[tablename].virtualfields))
                 else:
                     colset = new_row[tablename]
-                if not isinstance(field_type, str):
+
+                if isinstance(field_type, SQLCustomType):
+                    colset[fieldname] = field_type.decoder(value)
+                elif not isinstance(field_type, str) or value==None:
                     colset[fieldname] = value
-                elif isinstance(field.type, str) and field.type.startswith('reference'):
-                    referee = field.type[10:].strip()
-                    if not value:
-                        colset[fieldname] = value
-                    elif not '.' in referee:
+                elif isinstance(field_type, str) and \
+                        field_type.startswith('reference'):
+                    referee = field_type[10:].strip()
+                    if not '.' in referee:
                         colset[fieldname] = rid = Reference(value)
                         (rid._table, rid._record) = (db[referee], None)
                     else: ### reference not by id
                         colset[fieldname] = value
-                elif field.type == 'blob' and value != None and blob_decode:
-                    colset[fieldname] = base64.b64decode(str(value))
-                elif field.type == 'boolean' and value != None:
+                elif field_type == 'boolean':
                     if value == True or value == 'T' or value == 't':
                         colset[fieldname] = True
                     else:
                         colset[fieldname] = False
-                elif field.type == 'date' and value != None\
+                elif field_type == 'date' \
                         and (not isinstance(value, datetime.date)\
                                  or isinstance(value, datetime.datetime)):
-                    if not value: colset[fieldname] = None
-                    else:
-                        (y, m, d) = [int(x) for x in
-                                     str(value)[:10].strip().split('-')]
-                        colset[fieldname] = datetime.date(y, m, d)
-                elif field.type == 'time' and value != None\
+                    (y, m, d) = [int(x) for x in
+                                 str(value)[:10].strip().split('-')]
+                    colset[fieldname] = datetime.date(y, m, d)
+                elif field_type == 'time' \
                         and not isinstance(value, datetime.time):
-                    if not value: colset[fieldname] = None
+                    time_items = [int(x) for x in
+                                  str(value)[:8].strip().split(':')[:3]]
+                    if len(time_items) == 3:
+                        (h, mi, s) = time_items
                     else:
-                        time_items = [int(x) for x in
-                                      str(value)[:8].strip().split(':')[:3]]
-                        if len(time_items) == 3:
-                            (h, mi, s) = time_items
-                        else:
-                            (h, mi, s) = time_items + [0]
-                        colset[fieldname] = datetime.time(h, mi, s)
-                elif field.type == 'datetime' and value != None\
+                        (h, mi, s) = time_items + [0]
+                    colset[fieldname] = datetime.time(h, mi, s)
+                elif field_type == 'datetime'\
                         and not isinstance(value, datetime.datetime):
-                    if not value: colset[fieldname] = None
+                    (y, m, d) = [int(x) for x in
+                                 str(value)[:10].strip().split('-')]
+                    time_items = [int(x) for x in
+                                  str(value)[11:19].strip().split(':')[:3]]
+                    if len(time_items) == 3:
+                        (h, mi, s) = time_items
                     else:
-                        (y, m, d) = [int(x) for x in
-                                     str(value)[:10].strip().split('-')]
-                        time_items = [int(x) for x in
-                                      str(value)[11:19].strip().split(':')[:3]]
-                        if len(time_items) == 3:
-                            (h, mi, s) = time_items
-                        else:
-                            (h, mi, s) = time_items + [0]
-                        colset[fieldname] = datetime.datetime(y, m, d, h, mi, s)
-                elif isinstance(field.type, SQLCustomType) and value != None:
-                    colset[fieldname] = field.type.decoder(value)
-                elif field.type.startswith('decimal') and value != None:
-                    decimals = [int(x) for x in field.type[8:-1].split(',')][-1]
+                        (h, mi, s) = time_items + [0]
+                    colset[fieldname] = datetime.datetime(y, m, d, h, mi, s)
+                elif field_type == 'blob' and blob_decode:
+                    colset[fieldname] = base64.b64decode(str(value))
+                elif field_type.startswith('decimal'):
+                    decimals = [int(x) for x in field_type[8:-1].split(',')][-1]
                     if field._db._dbname == 'sqlite':
                         value = ('%.' + str(decimals) + 'f') % value
                     if not isinstance(value, decimal.Decimal):
                         value = decimal.Decimal(str(value))
                     colset[fieldname] = value
-                elif field.type.startswith('list:integer') and value != None:
+                elif field_type.startswith('list:integer'):
                     if db._uri != 'gae':
-                        colset[fieldname] = [int(x) for x in value.split('|') if x.strip()]
+                        colset[fieldname] = bar_decode_integer(value)
                     else:
                         colset[fieldname] = value
-                elif field.type.startswith('list:reference') and value != None:
+                elif field_type.startswith('list:reference'):
                     if db._uri != 'gae':
-                        colset[fieldname] = [int(x) for x in value.split('|') if x.strip()]
+                        colset[fieldname] = bar_decode_integer(value)
                     else:
                         colset[fieldname] = value
-                elif field.type.startswith('list:string') and value != None:
+                elif field_type.startswith('list:string'):
                     if db._uri != 'gae':
-                        colset[fieldname] = [x.replace('||', '|') for x in value.split('|') if x.strip()]
+                        colset[fieldname] = bar_decode_string(value)
                     else:
                         colset[fieldname] = value
                 else:
                     colset[fieldname] = value
-                if field.type == 'id':
+                if field_type == 'id':
                     id = colset[field.name]
                     colset.update_record = lambda _ = (colset, table, id), **a: update_record(_, a)
                     colset.delete_record = lambda t = table, i = id: t._db(t.id==i).delete()
@@ -3411,7 +3426,7 @@ excluded + tables_to_merge.keys()])
                                        for fieldname in table.fields \
                                        if not fieldname in update_fields \
                                        and table[fieldname].compute != None]))
-        sql_v = 'SET ' + ', '.join(['%s=%s' % (field,
+        sql_v = 'SET ' + ', '.join(['%s=%s' % (field, 
                                    sql_represent(value,
                                    table[field].type, dbname, self._db._db_codec))
                                    for (field, value) in
@@ -3517,12 +3532,12 @@ class Rows(object):
         return self
 
     def __and__(self, other):
-        if self.colnames!=other.colnames: raise Exception, 'Rows: different colnames'
+        if self.colnames!=other.colnames: raise Exception, 'Cannot & incompatible Rows objects'
         records = self.records+other.records
         return Rows(self.db,records,self.colnames)
 
     def __or__(self, other):
-        if self.colnames!=other.colnames: raise Exception, 'Rows: different colnames'
+        if self.colnames!=other.colnames: raise Exception, 'Cannot | incompatible Rows objects'
         records = self.records
         records += [record for record in other.records \
                         if not record in records]
@@ -3680,6 +3695,8 @@ class Rows(object):
                 return int(value)
             elif hasattr(value, 'isoformat'):
                 return value.isoformat()[:19].replace('T', ' ')
+            elif isinstance(value, (list,tuple)): # for type='list:..'
+                return bar_encode(value)
             return value
 
         for record in self:
@@ -3687,17 +3704,16 @@ class Rows(object):
             for col in self.colnames:
                 if not table_field.match(col):
                     row.append(record._extra[col])
-                else:
+                else:                    
                     (t, f) = col.split('.')
+                    field = self.db[t][f]
                     if isinstance(record.get(t, None), (Row,dict)):
-                        row.append(none_exception(record[t][f]))
-                    elif represent:
-                        if self.db[t][f].represent:
-                            row.append(none_exception(self.db[t][f].represent(record[f])))
-                        else:
-                            row.append(none_exception(record[f]))
+                        value = record[t][f]
                     else:
-                        row.append(none_exception(record[f]))
+                        value = record[f]
+                    if represent and field.represent:
+                            value = field.represent(value)
+                    row.append(none_exception(value))
             writer.writerow(row)
 
     def __str__(self):

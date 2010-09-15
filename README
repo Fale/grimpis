@@ -843,3 +843,25 @@ request.cid, request.ajax, A(cid=request.cid), response.js
 
 #1.83.2
 mostly cleanup
+
+#1.84.1-4
+flash now stays put in the top right corner
+improved behavior for URL and T objects
+new app level logging with logging.conf (thanks Jonathan)
+improved OpenID (thanks Michele)
+web2py_ajax handles prepend, append, hide (thanks Juris)
+web2py_ajax also handels pre-validation of decimal fields
+ru-ru translation (thanks Michele)
+sk-sk translation (thanks Julius)
+migrations save .table only if changed and after each ALTER TABLE (no more mysql inconsistencies)
+fixed bugs in SQLCustomField, Field(default=...), IS_IMAGE, IS_DECIMAL_IN_RANGE and a few more.
+Better validators (IS_DECIMAL_IN_RANGE, IS_INT_IN_RANGE, etc) thanks Jonatham
+Polymmodel support on GAE
+Experimental ListWidget
+moved DAL and routes to thread.local (thanks Jonathan, again)
+scripts/extract_mysql_models.py, thanks Falko Krause and Ron McOuat 
+scripts/dbsessions2trash.py, thanks Scott
+
+1.85.1
+fixed some bugs
+added pyfpdf, thank Mariano

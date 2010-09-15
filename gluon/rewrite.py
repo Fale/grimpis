@@ -11,13 +11,7 @@ import os
 import re
 import logging
 import traceback
-
-LEVELS = {'debug': logging.DEBUG,
-          'info': logging.INFO,
-          'warning': logging.WARNING,
-          'error': logging.ERROR,
-          'critical': logging.CRITICAL}
-
+import threading
 from storage import Storage
 from http import HTTP
 
@@ -25,29 +19,30 @@ regex_at = re.compile(r'(?<!\\)\$[a-zA-Z]\w*')
 regex_anything = re.compile(r'(?<!\\)\$anything')
 regex_iter = re.compile(r'.*code=(?P<code>\d+)&ticket=(?P<ticket>.+).*')
 
-params_default = Storage()
-params = params_default
+logger = logging.getLogger('web2py.rewrite')
 
-params.default_application = "init"
-params.default_controller = "default"
-params.default_function = "index"
-params.routes_app = []
-params.routes_in = []
-params.routes_out = []
-params.routes_onerror = []
-params.routes_apps_raw = []
-params.routes_logging = []
-params.error_handler = None
-params.error_message = '<html><body><h1>Invalid request</h1></body></html>'
-params.error_message_custom = '<html><body><h1>%s</h1></body></html>'
-params.error_message_ticket = \
-    '<html><body><h1>Internal error</h1>Ticket issued: <a href="/admin/default/ticket/%(ticket)s" target="_blank">%(ticket)s</a></body><!-- this is junk text else IE does not display the page: '+('x'*512)+' //--></html>'
+thread = threading.local()  # thread-local storage for routing parameters
+
+def _params_default(app=None):
+    p = Storage()
+    p.name = app or "BASE"
+    p.default_application = app or "init"
+    p.default_controller = "default"
+    p.default_function = "index"
+    p.routes_app = []
+    p.routes_in = []
+    p.routes_out = []
+    p.routes_onerror = []
+    p.routes_apps_raw = []
+    p.error_handler = None
+    p.error_message = '<html><body><h1>%s</h1></body></html>'
+    p.error_message_ticket = \
+        '<html><body><h1>Internal error</h1>Ticket issued: <a href="/admin/default/ticket/%(ticket)s" target="_blank">%(ticket)s</a></body><!-- this is junk text else IE does not display the page: '+('x'*512)+' //--></html>'
+    return p
 
 params_apps = dict()
-params_base = Storage()
-for key, value in params_default.items():
-    params_base[key] = value
-params = params_base
+params = _params_default(app=None)  # base (and legacy) rewrite parameters
+thread.routes = params # default to base rewrite parameters
 
 def compile_re(k, v):
     """
@@ -92,7 +87,6 @@ def load(routes='routes.py', app=None):
     (called from main.py at web2py initialization time)
     store results in params 
     """
-    global params, params_base
     symbols = {}
 
     if app is None:
@@ -103,37 +97,35 @@ def load(routes='routes.py', app=None):
         return
     try:
         routesfp = open(path, 'r')
-        exec routesfp.read() in symbols
+        exec routesfp.read().replace('\r\n','\n') in symbols
         routesfp.close()
-        logging.info('URL rewrite is on. configuration in %s' % path)
+        logger.info('URL rewrite is on. configuration in %s' % path)
     except SyntaxError, e:
         routesfp.close()
-        logging.error('Your %s has a syntax error ' % path + \
+        logger.error('Your %s has a syntax error ' % path + \
                           'Please fix it before you restart web2py\n' + \
                           traceback.format_exc())
         raise e
 
-    p = Storage()
-    for (sym, default) in params_default.items():
-        p[sym] = default
+    if app is None:
+        p = params
+    else:
+        p = _params_default(app)
+
     for sym in ('routes_app', 'routes_in', 'routes_out'):
         if sym in symbols:
             for (k, v) in symbols[sym]:
                 p[sym].append(compile_re(k, v))
-    for sym in ('routes_onerror', 'routes_apps_raw', 'routes_logging',
+    for sym in ('routes_onerror', 'routes_apps_raw',
                 'error_handler','error_message', 'error_message_ticket',
                 'default_application','default_controller', 'default_function'):
         if sym in symbols:
             p[sym] = symbols[sym]
-    if p.routes_logging:
-        p.loglevel = LEVELS.get(p.routes_logging.lower(), logging.INFO)
 
     if app is None:
-        params_base = p
-        params = params_base
-        for app in os.listdir('applications'):
-            if os.path.exists(os.path.join('applications', app, routes)):
-                load(routes, app)
+        for appname in os.listdir('applications'):
+            if os.path.exists(os.path.join('applications', appname, routes)):
+                load(routes, appname)
     else:
         params_apps[app] = p
 
@@ -153,11 +145,9 @@ def filter_uri(e, regexes, tag, default=None):
     for (regex, value) in regexes:
         if regex.match(key):
             rewritten = regex.sub(value, key)
-            if params.routes_logging:
-                logging.log(params.loglevel, '%s: [%s] [%s] -> %s' % (tag, key, value, rewritten))
+            logger.debug('%s: [%s] [%s] -> %s' % (tag, key, value, rewritten))
             return (rewritten, query, original_uri)
-    if params.routes_logging:
-        logging.log(params.loglevel, '%s: [%s] -> %s (not rewritten)' % (tag, key, default))
+    logger.debug('%s: [%s] -> %s (not rewritten)' % (tag, key, default))
     return (default, query, original_uri)
 
 def select(e=None):
@@ -165,18 +155,19 @@ def select(e=None):
     select a set of rewrite params for the current request
     called from main.wsgibase before any URL rewriting
     """
-    global params
-    params = params_base
     app = None
     if e and params.routes_app:
         (app, q, u) = filter_uri(e, params.routes_app, "routes_app")
-        params = params_apps.get(app, params_base)
+        thread.routes = params_apps.get(app, params)
+    else:
+        thread.routes = params # default to base rewrite parameters
+    logger.debug("select routing parameters: %s" % thread.routes.name)
     return app  # for doctest
 
 def filter_in(e):
     "called from main.wsgibase to rewrite incoming URL"
-    if params.routes_in:
-        (path, query, original_uri) = filter_uri(e, params.routes_in, "routes_in", e['PATH_INFO'])
+    if thread.routes.routes_in:
+        (path, query, original_uri) = filter_uri(e, thread.routes.routes_in, "routes_in", e['PATH_INFO'])
         if path.find('?') < 0:
             e['PATH_INFO'] = path
         else:
@@ -189,7 +180,7 @@ def filter_in(e):
 
 def filter_out(url, e=None):
     "called from html.URL to rewrite outgoing URL"
-    if params.routes_out:
+    if thread.routes.routes_out:
         items = url.split('?', 1)
         if e:
             host = e.get('http_host', 'localhost').lower()
@@ -202,26 +193,24 @@ def filter_out(url, e=None):
                   e.get('request_method', 'get').lower(), items[0])
         else:
             items[0] = ':http://localhost:get %s' % items[0]
-        for (regex, value) in params.routes_out:
+        for (regex, value) in thread.routes.routes_out:
             if regex.match(items[0]):
                 rewritten = '?'.join([regex.sub(value, items[0])] + items[1:])
-                if params.routes_logging:
-                    logging.log(params.loglevel, 'routes_out: [%s] -> %s' % (url, rewritten))
+                logger.debug('routes_out: [%s] -> %s' % (url, rewritten))
                 return rewritten
-    if params.routes_logging:
-        logging.log(params.loglevel, 'routes_out: [%s] not rewritten' % url)
+    logger.debug('routes_out: [%s] not rewritten' % url)
     return url
 
 
 def try_redirect_on_error(http_object, request, ticket=None):
     "called from main.wsgibase to rewrite the http response"
     status = int(str(http_object.status).split()[0])
-    if status>399 and params.routes_onerror:
+    if status>399 and thread.routes.routes_onerror:
         keys=set(('%s/%s' % (request.application, status),
                   '%s/*' % (request.application),
                   '*/%s' % (status),
                   '*/*'))
-        for (key,redir) in params.routes_onerror:
+        for (key,redir) in thread.routes.routes_onerror:
             if key in keys:
                 if redir == '!':
                     break
@@ -275,12 +264,12 @@ def filter_url(url, method='get', remote='0.0.0.0', out=False, app=False):
 
 def filter_err(status, application='app', ticket='tkt'):
     "doctest interface to routes_onerror"
-    if status > 399 and params.routes_onerror:
+    if status > 399 and thread.routes.routes_onerror:
         keys = set(('%s/%s' % (application, status),
                   '%s/*' % (application),
                   '*/%s' % (status),
                   '*/*'))
-        for (key,redir) in params.routes_onerror:
+        for (key,redir) in thread.routes.routes_onerror:
             if key in keys:
                 if redir == '!':
                     break

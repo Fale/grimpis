@@ -37,6 +37,8 @@ from sql import Field
 
 __all__ = ['Mail', 'Auth', 'Recaptcha', 'Crud', 'Service', 'PluginManager', 'fetch', 'geocode', 'prettydate']
 
+logger = logging.getLogger("web2py")
+
 DEFAULT = lambda: None
 
 def callback(actions,form,tablename=None):
@@ -180,7 +182,7 @@ class Mail(object):
 
             cipher_type       : None
                                 gpg - need a python-pyme package and gpgme lib
-                                x509 - smime 
+                                x509 - smime
             sign              : sign the message (True or False)
             sign_passphrase   : passphrase for key signing
             encrypt           : encrypt the message
@@ -305,7 +307,7 @@ class Mail(object):
         if not isinstance(self.settings.sender, str):
             raise Exception('Sender address not specified')
         payload_in = MIMEMultipart.MIMEMultipart('mixed')
-        if to:         
+        if to:
             if not isinstance(to, (list,tuple)):
                 to = [to]
         else:
@@ -348,8 +350,8 @@ class Mail(object):
                 payload_in.attach(attachment)
         else:
             payload_in.attach(attachments)
-        
-        
+
+
         #######################################################
         #                      CIPHER                         #
         #######################################################
@@ -467,17 +469,17 @@ class Mail(object):
                 x509_sign_certfile=self.settings.x509_sign_keyfile
             # crypt certfiles could be a string or a list
             x509_crypt_certfiles=self.settings.x509_crypt_certfiles
-            
-            
+
+
             # need m2crypto
             from M2Crypto import BIO, SMIME, X509
             msg_bio = BIO.MemoryBuffer(payload_in.as_string())
             s = SMIME.SMIME()
-            
+
             #                   SIGN
             if sign:
                 #key for signing
-                try: 
+                try:
                     s.load_key(x509_sign_keyfile, x509_sign_certfile, callback=lambda x: sign_passphrase)
                     if encrypt:
                         p7 = s.sign(msg_bio)
@@ -487,19 +489,19 @@ class Mail(object):
                 except Exception,e:
                     self.error="Something went wrong on signing: <%s>" %str(e)
                     return False
-                    
+
             #                   ENCRYPT
             if encrypt:
                 try:
                     sk = X509.X509_Stack()
                     if not isinstance(x509_crypt_certfiles, (list, tuple)):
                         x509_crypt_certfiles = [x509_crypt_certfiles]
-                    
+
                     # make an encryption cert's stack
                     for x in x509_crypt_certfiles:
                         sk.push(X509.load_cert(x))
                     s.set_x509_stack(sk)
-                    
+
                     s.set_cipher(SMIME.Cipher('des_ede3_cbc'))
                     tmp_bio = BIO.MemoryBuffer()
                     if sign:
@@ -510,7 +512,7 @@ class Mail(object):
                 except Exception,e:
                     self.error="Something went wrong on encrypting: <%s>" %str(e)
                     return False
-            
+
             #                 Final stage in sign and encryption
             out = BIO.MemoryBuffer()
             if encrypt:
@@ -544,7 +546,7 @@ class Mail(object):
         result = {}
         try:
             if self.settings.server == 'logging':
-                logging.warn('email not sent\n%s\nFrom: %s\nTo: %s\n\n%s\n%s\n' % \
+                logger.warn('email not sent\n%s\nFrom: %s\nTo: %s\n\n%s\n%s\n' % \
                                  ('-'*40,self.settings.sender,
                                   ', '.join(to),text or html,'-'*40))
             elif self.settings.server == 'gae':
@@ -552,7 +554,7 @@ class Mail(object):
                 attachments = attachments and [(a.my_filename,a.my_payload) for a in attachments]
                 if attachments:
                     result = mail.send_mail(sender=self.settings.sender, to=to,
-                                            subject=subject, body=text, html=html, 
+                                            subject=subject, body=text, html=html,
                                             attachments=attachments)
                 elif html:
                     result = mail.send_mail(sender=self.settings.sender, to=to,
@@ -571,7 +573,7 @@ class Mail(object):
                 result = server.sendmail(self.settings.sender, to, payload.as_string())
                 server.quit()
         except Exception, e:
-            logging.warn('Mail.send failure:%s' % e)
+            logger.warn('Mail.send failure:%s' % e)
             self.result = result
             self.error = e
             return False
@@ -770,7 +772,7 @@ class Auth(object):
         """
 
         self.environment = Storage(environment)
-        self.db = db 
+        self.db = db
         request = self.environment.request
         session = self.environment.session
         auth = session.auth
@@ -809,7 +811,7 @@ class Auth(object):
         self.settings.retrieve_password_captcha = None
         self.settings.captcha = None
         self.settings.expiration = 3600         # one day
-        self.settings.long_expiration = 3600*30 # one month
+        self.settings.long_expiration = 3600*30*24 # one month
         self.settings.remember_me_form = True
         self.settings.allow_basic_login = False
         self.settings.on_failed_authorization = \
@@ -845,8 +847,10 @@ class Auth(object):
         self.settings.login_methods = [self]
         self.settings.login_form = self
         self.settings.login_email_validate = True
+        self.settings.login_userfield = None 
 
         self.settings.logout_next = self.url('index')
+        self.settings.logout_onlogout = None
 
         self.settings.register_next = self.url('index')
         self.settings.register_onvalidation = []
@@ -916,6 +920,7 @@ class Auth(object):
 
         self.messages.register_log = 'User %(id)s Registered'
         self.messages.login_log = 'User %(id)s Logged-in'
+        self.messages.login_failed_log = None
         self.messages.logout_log = 'User %(id)s Logged-out'
         self.messages.profile_log = 'User %(id)s Profile updated'
         self.messages.verify_email_log = 'User %(id)s Verification email sent'
@@ -952,6 +957,7 @@ class Auth(object):
         self.messages.label_origin = 'Origin'
         self.messages.label_remember_me = "Remember me (for 30 days)"
         self.messages['T'] = self.environment.T
+        self.messages.verify_password_comment = 'please input your password again'
         self.messages.lock_keys = True
 
         # for "remember me" option
@@ -964,6 +970,26 @@ class Auth(object):
             #)
             # sets for appropriate cookie an appropriate expiration time
             response.cookies[response.session_id_name]["expires"] = auth.expiration
+
+    def _addrow(self, form,a,b,c,style,_id):
+        if style == "divs":
+            form[0].insert(-1, DIV(DIV(LABEL(a),_class='w2p_fl'),
+                                  DIV(b, _class='w2p_fw'),
+                                  DIV(c, _class='w2p_fc'),
+                                  _id = _id))
+        elif style == "table2cols":
+            form[0].insert(-1, TR(LABEL(a),
+                                  b, _id = _id))
+        elif style == "ul":
+            form[0].insert(-1, LI(DIV(LABEL(a),_class='w2p_fl'),
+                                  DIV(b, _class='w2p_fw'),
+                                  DIV(c, _class='w2p_fc'),
+                                  _id = _id))
+        else:
+            form[0].insert(-1, TR(LABEL(a),
+                                  b,c,
+                                  _id = _id))
+
 
     def _HTTP(self, *a, **b):
         """
@@ -982,7 +1008,7 @@ class Auth(object):
         request = self.environment.request
         args = request.args
         if not args:
-            redirect(self.url(args='login'))
+            redirect(self.url(args='login',vars=request.vars))
         elif args[0] in self.settings.actions_disabled:
             raise HTTP(404)
         if args[0] == 'login':
@@ -1021,7 +1047,7 @@ class Auth(object):
             action=URL(request.application,request.controller,'user')
         if prefix:
             prefix = prefix.strip()+' '
-        if self.user_id:            
+        if self.user_id:
             logout=A(T('logout'),_href=action+'/logout')
             profile=A(T('profile'),_href=action+'/profile')
             password=A(T('password'),_href=action+'/change_password')
@@ -1270,15 +1296,18 @@ class Auth(object):
         session = self.environment.session
         table_user = self.settings.table_user
         if 'username' in table_user.fields:
+            if self.settings.login_userfield:
+                userfield = self.settings.login_userfield
+        elif 'username' in table_user.fields:
             userfield = 'username'
         else:
-            userfield = 'email'
+            userfield = 'email' 
         passfield = self.settings.password_field
         user = self.db(table_user[userfield] == username).select().first()
         password = table_user[passfield].validate(password)[0]
         if user:
             if not user.registration_key and user[passfield] == password:
-                user = Storage(table_user._filter_fields(user, id=True))                
+                user = Storage(table_user._filter_fields(user, id=True))
                 session.auth = Storage(user=user, last_visit=request.now,
                                        expiration=self.settings.expiration)
                 self.user = user
@@ -1301,7 +1330,9 @@ class Auth(object):
         """
 
         table_user = self.settings.table_user
-        if 'username' in table_user.fields:
+        if self.settings.login_userfield:
+            username = self.settings.login_userfield
+        elif 'username' in table_user.fields: 
             username = 'username'
         else:
             username = 'email'
@@ -1342,10 +1373,8 @@ class Auth(object):
 
             if self.settings.remember_me_form:
                 ## adds a new input checkbox "remember me for longer"
-                form[0].insert(-1, TR(
-                    "",
-                    TD(
-                        INPUT(_type='checkbox',
+                self._addrow(form,XML("&nbsp;&nbsp;"),
+                        DIV(INPUT(_type='checkbox',
                             _class='checkbox',
                             _id="auth_user_remember",
                             _name="remember",
@@ -1353,17 +1382,14 @@ class Auth(object):
                         LABEL(
                             self.messages.label_remember_me,
                             _for="auth_user_remember",
-                        ),
-                    ),
-                    ""
-                ))
+                        )),"",
+                        self.settings.formstyle,
+                        'auth_user_remember__row')
 
             captcha = self.settings.login_captcha or \
                 (self.settings.login_captcha!=False and self.settings.captcha)
             if captcha:
-                form[0].insert(-1, TR(LABEL(captcha.label),
-                                      captcha,captcha.comment,
-                                      _id = 'capctha__row'))
+                self._addrow(form, captcha.label, captcha, captcha.comment, self.settings.formstyle,'captcha__row')
             accepted_form = False
             if form.accepts(request.post_vars, session,
                             formname='login', dbio=False,
@@ -1417,6 +1443,8 @@ class Auth(object):
                                 user = self.get_or_create_user(form.vars)
                                 break
                 if not user:
+                    if self.settings.login_failed_log:
+                        self.log_event(self.settings.login_failed_log % request.post_vars)                        
                     # invalid login
                     session.flash = self.messages.invalid_login
                     redirect(self.url(args=request.args))
@@ -1425,7 +1453,7 @@ class Auth(object):
             # use a central authentication server
             cas = self.settings.login_form
             cas_user = cas.get_user()
-            
+
             if cas_user:
                 cas_user[passfield] = None
                 user = self.get_or_create_user(cas_user)
@@ -1433,7 +1461,7 @@ class Auth(object):
                 return cas.login_form()
             else:
                 # we need to pass through login again before going on
-                next = URL(r=request) + '?_next=' + next
+                next = self.url('user',args='login',vars=dict(_next=next))
                 redirect(cas.login_url(next))
 
 
@@ -1552,19 +1580,17 @@ class Auth(object):
         for i, row in enumerate(form[0].components):
             item = row[1][0]
             if isinstance(item, INPUT) and item['_name'] == passfield:
-                form[0].insert(i+1, TR(
-                        LABEL(self.messages.verify_password + ':'),
-                        INPUT(_name="password_two",
-                              _type="password",
-                              requires=IS_EXPR('value==%s' % \
-                               repr(request.vars.get(passfield, None)),
-                        error_message=self.messages.mismatched_password)),
-                '', _class='%s_%s__row' % (table_user, 'password_two')))
+                self._addrow(form, self.messages.verify_password + ':',
+                              INPUT(_name="password_two",  _type="password",
+                                    requires=IS_EXPR('value==%s' % \
+                                        repr(request.vars.get(passfield, None)),
+                                    error_message=self.messages.mismatched_password)),
+                              self.messages.verify_password_comment,
+                              self.settings.formstyle,
+                              '%s_%s__row' % (table_user, 'password_two'))
         captcha = self.settings.register_captcha or self.settings.captcha
         if captcha:
-            form[0].insert(-1, TR(LABEL(captcha.label),
-                                  captcha,captcha.comment,
-                                  _id = 'capctha__row'))
+            self._addrow(form, captcha.label, captcha, captcha.comment,self.settings.formstyle, 'captcha__row')
 
         table_user.registration_key.default = key = web2py_uuid()
         if form.accepts(request.post_vars, session, formname='register',
@@ -1707,9 +1733,8 @@ class Auth(object):
                        formstyle=self.settings.formstyle
                        )
         if captcha:
-            form[0].insert(-1, TR(LABEL(captcha.label),
-                                      captcha,captcha.comment,
-                                      _id = 'capctha__row'))
+            self._addrow(form, captcha.label, captcha, captcha.comment,self.settings.formstyle, 'captcha__row')
+
         if form.accepts(request.post_vars, session,
                         formname='retrieve_username', dbio=False,
                         onvalidation=onvalidation,hideerror=self.settings.hideerror):
@@ -1920,8 +1945,10 @@ class Auth(object):
         if log == DEFAULT:
             log = self.messages.reset_password_log
         old_requires = table_user.email.requires
-        table_user.email.requires = [IS_IN_DB(self.db, table_user.email,
-                                            error_message=self.messages.invalid_email)]
+        table_user.email.requires = [
+            IS_EMAIL(error_message=self.messages.invalid_email),
+            IS_IN_DB(self.db, table_user.email,
+                     error_message=self.messages.invalid_email)]
         form = SQLFORM(table_user,
                        fields=['email'],
                        hidden=dict(_next=next),
@@ -1931,12 +1958,11 @@ class Auth(object):
                        formstyle=self.settings.formstyle
                        )
         if captcha:
-            form[0].insert(-1, TR(LABEL(captcha.label),
-                                      captcha,captcha.comment,
-                                      _id = 'capctha__row'))
+            self._addrow(form, captcha.label, captcha, captcha.comment, self.settings.formstyle,'captcha__row')
         if form.accepts(request.post_vars, session,
                         formname='reset_password', dbio=False,
-                        onvalidation=onvalidation,hideerror=self.settings.hideerror):
+                        onvalidation=onvalidation,
+                        hideerror=self.settings.hideerror):
             user = self.db(table_user.email == form.vars.email).select().first()
             if not user:
                 session.flash = self.messages.invalid_email
@@ -1998,7 +2024,7 @@ class Auth(object):
         db = self.db
         table_user = self.settings.table_user
         usern = self.settings.table_user_name
-        s = db(table_user.email == self.user.email)
+        s = db(table_user.id == self.user.id)
 
         request = self.environment.request
         session = self.environment.session
@@ -2092,7 +2118,7 @@ class Auth(object):
             )
         if form.accepts(request.post_vars, session,
                         formname='profile',
-                        onvalidation=onvalidation,hideerror=self.settings.hideerror):            
+                        onvalidation=onvalidation,hideerror=self.settings.hideerror):
             self.user.update(table_user._filter_fields(form.vars))
             session.flash = self.messages.profile_updated
             if log:
@@ -2729,18 +2755,16 @@ class Crud(object):
             upload=self.settings.download_url,
             formstyle=self.settings.formstyle
             )
+        self.accepted = False
+        self.deleted = False
         captcha = self.settings.update_captcha or \
                   self.settings.captcha
         if record and captcha:
-            form[0].insert(-1, TR(LABEL(captcha.label),
-                                  captcha, captcha.comment,
-                                  _id='captcha__row'))
+            self._addrow(form, captcha.label, captcha, captcha.comment, self.settings.formstyle,'captcha__row')
         captcha = self.settings.create_captcha or \
                   self.settings.captcha
         if not record and captcha:
-            form[0].insert(-1, TR(LABEL(captcha.label),
-                                  captcha, captcha.comment,
-                                  _id='captcha__row'))
+            self._addrow(form, captcha.label, captcha, captcha.comment, self.settings.formstyle,'captcha__row')
         if not request.extension in ('html','load'):
             (_session, _formname) = (None, None)
         else:
@@ -2754,10 +2778,12 @@ class Crud(object):
         if form.accepts(request.post_vars, _session, formname=_formname,
                         onvalidation=onvalidation, keepvalues=keepvalues,
                         hideerror=self.settings.hideerror):
+            self.accepted = True
             response.flash = message
             if log:
                 self.log_event(log % form.vars)
             if request.vars.delete_this_record:
+                self.deleted = True
                 message = self.messages.record_deleted
                 callback(ondelete,form,table._tablename)
             response.flash = message
@@ -2861,10 +2887,11 @@ class Crud(object):
         record = table[record_id]
         if record:
             callback(self.settings.delete_onvalidation,record)
-            del table[record_id]            
+            del table[record_id]
             callback(self.settings.delete_onaccept,record,table._tablename)
             session.flash = message
-        redirect(next)
+        if next: # Only redirect when explicit                                   
+            redirect(next)
 
     def select(
         self,
@@ -2900,14 +2927,14 @@ class Crud(object):
         if not request.extension in ('html','load'):
             return rows.as_list()
         return SQLTABLE(rows, headers=headers, **attr)
-    
+
     def get_format(self, field):
-        rtable = field._db[field.type[10:]]                 
+        rtable = field._db[field.type[10:]]
         format = rtable.get('_format', None)
         if format and isinstance(format, str):
             return format[2:-2]
-        return field.name            
-    
+        return field.name
+
     def get_query(self, field, op, value, refsearch=False):
         try:
             if refsearch: format = self.get_format(field)
@@ -2947,12 +2974,12 @@ class Crud(object):
                 else:
                     return lambda row: value in row[field.name][format]
         except:
-            return None 
+            return None
 
 
     def search(self, *tables, **args):
         """
-        Creates a search form and its results for a table 
+        Creates a search form and its results for a table
         Example usage:
         form, results = crud.search(db.test,
                                queries = ['equals', 'not equal', 'contains'],
@@ -2966,16 +2993,16 @@ class Crud(object):
         table = tables[0]
         fields = args.get('fields', table.fields)
         request = self.environment.request
-        db = self.db     
+        db = self.db
         if not (isinstance(table, db.Table) or table in db.tables):
-            raise HTTP(404)        
+            raise HTTP(404)
         tbl = TABLE()
         selected = []; refsearch = []; results = []
         ops = args.get('queries', [])
         zero = args.get('zero', '')
         if not ops:
-            ops = ['equals', 'not equal', 'greater than', 
-                   'less than', 'starts with', 
+            ops = ['equals', 'not equal', 'greater than',
+                   'less than', 'starts with',
                    'ends with', 'contains']
         ops.insert(0,zero)
         query_labels = args.get('query_labels', {})
@@ -2990,7 +3017,7 @@ class Crud(object):
                               value = chkval == 'on')),
                      TD(field_labels.get(fieldname,fieldname)),
                         TD(SELECT([OPTION(query_labels.get(op,op),
-                                                 _value=op) for op in ops], 
+                                                 _value=op) for op in ops],
                                                  _name = "op" + fieldname,
                                          value = opval)),
                      TD(INPUT(_type = "text", _name = "txt" + fieldname,
@@ -2998,7 +3025,7 @@ class Crud(object):
                               _class = str(field.type))))
             tbl.append(row)
             if chkval:
-                if txtval and opval != '':                    
+                if txtval and opval != '':
                     if field.type[0:10] == 'reference ':
                         refsearch.append(self.get_query(field,
                                     opval, txtval, refsearch=True))
@@ -3639,7 +3666,7 @@ def prettydate(d,T=lambda x:x):
 def test_thread_separation():
     import thread, time
     def f():
-        c=PluginManager()        
+        c=PluginManager()
         lock1.acquire()
         lock2.acquire()
         c.x=7
@@ -3681,7 +3708,7 @@ class PluginManager(object):
     >>> plugins.me.param3 = 8
     >>> print plugins.me.param3
     8
-    
+
     Here are some tests:
 
     >>> a=PluginManager()
@@ -3700,7 +3727,7 @@ class PluginManager(object):
     8
     >>> test_thread_separation()
     5
-    >>> plugins=PluginManager('me',db='mydb')    
+    >>> plugins=PluginManager('me',db='mydb')
     >>> print plugins.me.db
     mydb
     >>> print 'me' in plugins

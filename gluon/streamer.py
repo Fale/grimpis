@@ -43,8 +43,10 @@ def stream_file_or_304_or_206(
     chunk_size = DEFAULT_CHUNK_SIZE,
     request = None,
     headers = {},
-    error_message = rewrite.params.error_message,
+    error_message = None,
     ):
+    if error_message is None:
+    	error_message = rewrite.thread.routes.error_message % 'invalid request'
     try:
         fp = open(static_file)
     except IOError, e:

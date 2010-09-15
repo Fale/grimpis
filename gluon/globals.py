@@ -374,14 +374,18 @@ class Session(Storage):
             session_folder = os.path.dirname(response.session_filename)
             response.session_file = open(response.session_filename, 'wb')
             portalocker.lock(response.session_file, portalocker.LOCK_EX)
-        cPickle.dump(dict(self), response.session_file)
-        self._unlock(response)
+        if response.session_file:
+            cPickle.dump(dict(self), response.session_file)        
+            try:
+                portalocker.unlock(response.session_file)
+                response.session_file.close()
+                del response.session_file
+            except: ### this should never happen but happens in Windows
+                pass
 
     def _unlock(self, response):
         if response and response.session_file:
             try:
                 portalocker.unlock(response.session_file)
-                response.session_file.close()
-                del response.session_file
             except: ### this should never happen but happens in Windows
                 pass

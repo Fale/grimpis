@@ -15,8 +15,6 @@ FOR INTERNAL USE ONLY
 import sys
 sys.path.append('../gluon')
 import os
-import stat
-import thread
 import copy
 import random
 from storage import Storage, List
@@ -25,7 +23,7 @@ from restricted import restricted, compile2
 from fileutils import listdir
 from myregex import regex_expose
 from languages import translator
-from sql import SQLDB, SQLField, DAL, Field
+from sql import BaseAdapter, SQLDB, SQLField, DAL, Field
 from sqlhtml import SQLFORM, SQLTABLE
 from cache import Cache
 from settings import settings
@@ -36,12 +34,13 @@ from http import HTTP, redirect
 import marshal
 import imp
 import logging
+logger = logging.getLogger("web2py")
+import rewrite
 
 try:
     import py_compile
 except:
-    logging.warning('unable to import py_compile')
-import rewrite
+    logger.warning('unable to import py_compile')
 
 is_gae = settings.web2py_runtime_gae
 
@@ -94,7 +93,6 @@ class LoadFactory:
                  extension=None, target=None,ajax=False,ajax_trap=False, 
                  url=None):
         import globals
-        import html
         target = target or 'c'+str(random.random())[2:]
         request = self.environment['request']
         if '.' in f:
@@ -233,15 +231,15 @@ def build_environment(request, response, session):
     environment['cache'] = Cache(request)
     environment['DAL'] = DAL
     environment['Field'] = Field
-    environment['SQLDB'] = SQLDB
-    environment['SQLField'] = SQLField
+    environment['SQLDB'] = SQLDB        # for backward compatibility
+    environment['SQLField'] = SQLField  # for backward compatibility
     environment['SQLFORM'] = SQLFORM
     environment['SQLTABLE'] = SQLTABLE
     environment['LOAD'] = LoadFactory(environment)
     environment['local_import'] = \
         lambda name, reload=False, app=request.application:\
         local_import_aux(name,reload,app)
-    SQLDB._set_thread_folder(os.path.join(request.folder, 'databases'))
+    BaseAdapter.set_folder(os.path.join(request.folder, 'databases'))
     response._view_environment = copy.copy(environment)
     return environment
 
@@ -369,7 +367,7 @@ def run_controller_in(controller, function, environment):
                                  % (controller, function))
         if not os.path.exists(filename):
             raise HTTP(400,
-                       rewrite.params.error_message_custom % 'invalid function',
+                       rewrite.thread.routes.error_message % 'invalid function',
                        web2py_error='invalid function')
         restricted(read_pyc(filename), environment, layer=filename)
     elif function == '_TEST':
@@ -377,7 +375,7 @@ def run_controller_in(controller, function, environment):
                                  % controller)
         if not os.path.exists(filename):
             raise HTTP(400,
-                       rewrite.params.error_message_custom % 'invalid controller',
+                       rewrite.thread.routes.error_message % 'invalid controller',
                        web2py_error='invalid controller')
         environment['__symbols__'] = environment.keys()
         fp = open(filename, 'r')
@@ -390,7 +388,7 @@ def run_controller_in(controller, function, environment):
                                  % controller)
         if not os.path.exists(filename):
             raise HTTP(400,
-                       rewrite.params.error_message_custom % 'invalid controller',
+                       rewrite.thread.routes.error_message % 'invalid controller',
                        web2py_error='invalid controller')
         fp = open(filename, 'r')
         code = fp.read()
@@ -398,7 +396,7 @@ def run_controller_in(controller, function, environment):
         exposed = regex_expose.findall(code)
         if not function in exposed:
             raise HTTP(400,
-                       rewrite.params.error_message_custom % 'invalid function',
+                       rewrite.thread.routes.error_message % 'invalid function',
                        web2py_error='invalid function')
         code = "%s\nresponse._vars=response._caller(%s)\n" % (code, function)
         if is_gae:
@@ -450,7 +448,7 @@ def run_view_in(environment):
                 restricted(code, environment, layer=filename)
                 return
         raise HTTP(400,
-                   rewrite.params.error_message_custom % 'invalid view',
+                   rewrite.thread.routes.error_message % 'invalid view',
                    web2py_error='invalid view')
     else:
         filename = os.path.join(folder, 'views', response.view)
@@ -459,7 +457,7 @@ def run_view_in(environment):
         filename = os.path.join(folder, 'views', response.view)
         if not os.path.exists(filename):
             raise HTTP(400,
-                       rewrite.params.error_message_custom % 'invalid view',
+                       rewrite.thread.routes.error_message % 'invalid view',
                        web2py_error='invalid view')
         layer = filename
         if is_gae:
@@ -469,7 +467,8 @@ def run_view_in(environment):
                                             context=environment),layer))
         else:
             ccode = parse_template(response.view,
-                os.path.join(folder, 'views'), context=environment)
+                                   os.path.join(folder, 'views'),
+                                   context=environment)
         restricted(ccode, environment, layer)
 
 def remove_compiled_application(folder):
