@@ -7,6 +7,7 @@
 '%s rows updated': '%s righe ("record") modificate',
 '(something like "it-it")': '(qualcosa simile a "it-it")',
 'A new version of web2py is available: %s': 'È disponibile una nuova versione di web2py: %s',
+'A new version of web2py is available: Version 1.85.1 (2010-09-15 14:47:53)\n': 'A new version of web2py is available: Version 1.85.1 (2010-09-15 14:47:53)\n',
 'ATTENTION: Login requires a secure (HTTPS) connection or running on localhost.': "ATTENZIONE: L'accesso richiede una connessione sicura (HTTPS) o l'esecuzione di web2py in locale (connessione su localhost)",
 'ATTENTION: TESTING IS NOT THREAD SAFE SO DO NOT PERFORM MULTIPLE TESTS CONCURRENTLY.': 'ATTENTZIONE: NON ESEGUIRE PIÙ TEST IN PARALLELO (I TEST NON SONO "THREAD SAFE")',
 'ATTENTION: you cannot edit the running application!': "ATTENZIONE: non puoi modificare l'applicazione correntemente in uso ",

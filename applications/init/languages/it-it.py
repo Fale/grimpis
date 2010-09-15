@@ -137,6 +137,7 @@
 'Group ID': 'ID del gruppo',
 'Group uniquely assigned to user %(id)s': 'Group uniquely assigned to user %(id)s',
 'Groups': 'Groups',
+'Groups list': 'Groups list',
 'Guatemala': 'Guatemala',
 'Guinea': 'Guinea',
 'Guinea-Bissau': 'Guinea-Bissau',
