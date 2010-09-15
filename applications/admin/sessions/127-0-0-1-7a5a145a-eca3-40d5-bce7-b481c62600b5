@@ -1,0 +1,1041 @@
+(dp1
+S'check_version'
+p2
+I00
+sS'flash'
+p3
+NsS'pam_user'
+p4
+NsS'authorized'
+p5
+I01
+sS'last_time'
+p6
+F1284559668.072077
+s.NtRp7
+(dp8
+S's'
+(dp9
+sS'm'
+S'web2py upgraded; please restart it'
+p10
+sS'T'
+g4
+(cgluon.languages
+translator
+p11
+g6
+NtRp12
+(dp13
+S'lazy'
+p14
+I01
+sS'requested_languages'
+p15
+(lp16
+S'en-us'
+p17
+aS'it-it'
+p18
+aS'it'
+p19
+aS'en'
+p20
+asS'http_accept_language'
+p21
+S'en-US,it-IT;q=0.8,it;q=0.6,en;q=0.4'
+p22
+sS'current_languages'
+p23
+(lp24
+S'en'
+p25
+asS'accepted_language'
+p26
+g18
+sS't'
+(dp27
+S'file "%(filename)s" deleted'
+p28
+S'cancellato il file "%(filename)s"'
+p29
+sS'code'
+p30
+g30
+sS'cache, errors and sessions cleaned'
+p31
+S'pulitura cache, errori and sessioni '
+p32
+sS'Edit current record'
+p33
+S'Modifica record corrente'
+p34
+sS'%s rows updated'
+p35
+S'%s righe ("record") modificate'
+p36
+sS'invalid ticket'
+p37
+S'ticket non valido'
+p38
+sS'cache'
+p39
+g39
+sS'state'
+p40
+S'stato'
+p41
+sS'languages'
+p42
+S'linguaggi'
+p43
+sS'database %s select'
+p44
+g44
+sS'Unable to download app because:'
+p45
+S'Impossibile scaricare applicazione perch\xc3\xa9'
+p46
+sS'%Y-%m-%d'
+p47
+S'%d/%m/%Y'
+p48
+sS'or import from csv file'
+p49
+S'oppure importa da file CSV'
+p50
+sS'Import/Export'
+p51
+S'Importa/Esporta'
+p52
+sS'db'
+p53
+g53
+sS'There are no static files'
+p54
+S'Non ci sono file statici'
+p55
+sS'Controllers'
+p56
+g56
+sS'upload plugin file:'
+p57
+S'carica file di plugin:'
+p58
+sS'Use (...)&(...) for AND, (...)|(...) for OR, and ~(...)  for NOT to build more complex queries.'
+p59
+S'Per costruire richieste (query) pi\xc3\xb9 complesse si usano (...)&(...) come "e" (AND), (...)|(...) come "o" (OR), e ~(...) come negazione (NOT).'
+p60
+sS'pack plugin'
+p61
+S'crea pacchetto del plugin'
+p62
+sS'There are no translators, only default language is supported'
+p63
+S'Non ci sono traduzioni, viene solo supportato il linguaggio di base'
+p64
+sS'try'
+p65
+S'prova'
+p66
+sS'overwrite installed app'
+p67
+S'sovrascrivi applicazione installata'
+p68
+sS'Editing Language file'
+p69
+S'Modifica file linguaggio'
+p70
+sS'YES'
+p71
+S'SI'
+p72
+sS'versioning'
+p73
+S'sistema di versioni'
+p74
+sS'delete plugin'
+p75
+S'cancella plugin'
+p76
+sS'Index'
+p77
+S'Indice'
+p78
+sS'invalid password'
+p79
+S'password non valida'
+p80
+sS'Version'
+p81
+S'Versione'
+p82
+sS'design'
+p83
+S'progetta'
+p84
+sS'customize me!'
+p85
+S'Personalizzami!'
+p86
+sS'file "%(filename)s" created'
+p87
+S'creato il file "%(filename)s"'
+p88
+sS'record id'
+p89
+S'ID del record'
+p90
+sS'Sure you want to delete this object?'
+p91
+S'Vuoi veramente cancellare questo oggetto?'
+p92
+sS'index'
+p93
+g93
+sS'errors'
+p94
+S'errori'
+p95
+sS'password changed'
+p96
+S'password modificata'
+p97
+sS'click here for online examples'
+p98
+S'clicca per vedere gli esempi'
+p99
+sS'Controller'
+p100
+g100
+sS'Exception instance attributes'
+p101
+g101
+sS'language file "%(filename)s" created/updated'
+p102
+S'file linguaggio "%(filename)s" creato/aggiornato'
+p103
+sS'unable to create application "%s"'
+p104
+S'impossibile creare applicazione "%s"'
+p105
+sS'application is compiled and cannot be designed'
+p106
+S"l'applicazione \xc3\xa8 compilata e non si pu\xc3\xb2 modificare"
+p107
+sS'Unable to check for upgrades'
+p108
+S'Impossibile controllare presenza di aggiornamenti'
+p109
+sS'admin disabled because not supported on google apps engine'
+p110
+S'amministrazione non supportata da Google Apps Engine'
+p111
+sS'Enterprise Web Framework'
+p112
+g112
+sS'new record inserted'
+p113
+S'nuovo record inserito'
+p114
+sS'Update:'
+p115
+S'Aggiorna:'
+p116
+sS'The "query" is a condition like "db.table1.field1==\'value\'". Something like "db.table1.field1==db.table2.field2" results in a SQL JOIN.'
+p117
+S'La richiesta (query) \xc3\xa8 una condizione come ad esempio  "db.tabella1.campo1==\'valore\'". Una condizione come "db.tabella1.campo1==db.tabella2.campo2" produce un "JOIN" SQL.'
+p118
+sS'Powered by'
+p119
+g119
+sS'appadmin'
+p120
+S'appadmin '
+p121
+sS'session expired'
+p122
+S'sessions scaduta'
+p123
+sS'logout'
+p124
+S'uscita'
+p125
+sS'login'
+p126
+S'accesso'
+p127
+sS'insert new'
+p128
+S'inserisci nuovo'
+p129
+sS'Current session'
+p130
+S'Sessione (session) corrente'
+p131
+sS'Invalid Query'
+p132
+S'Richiesta (query) non valida'
+p133
+sS'Are you sure you want to delete plugin "%s"?'
+p134
+S'Confermi di voler cancellare il plugin "%s"?'
+p135
+sS'to  previous version.'
+p136
+S'torna a versione precedente'
+p137
+sS'Are you sure you want to uninstall application "%s"?'
+p138
+S'Confermi di voler disinstallare l\'applicazione "%s"?'
+p139
+sS'This is the %(filename)s template'
+p140
+S'Questo \xc3\xa8 il template %(filename)s'
+p141
+sS'unable to parse csv file'
+p142
+S'non riesco a decodificare questo file CSV'
+p143
+sS'Languages'
+p144
+S'Linguaggi'
+p145
+sS'done!'
+p146
+S'fatto!'
+p147
+sS'table'
+p148
+S'tabella'
+p149
+sS'About application'
+p150
+S"Informazioni sull'applicazione"
+p151
+sS'Error logs for "%(app)s"'
+p152
+S'Log degli errori per "%(app)s"'
+p153
+sS'some files could not be removed'
+p154
+S'non \xc3\xa8 stato possibile rimuovere alcuni files'
+p155
+sS'unable to uninstall "%s"'
+p156
+S'impossibile disinstallare "%s"'
+p157
+sS'create'
+p158
+S'crea'
+p159
+sS'edit profile'
+p160
+S'modifica profilo'
+p161
+sS'A new version of web2py is available: Version 1.85.1 (2010-09-15 14:47:53)\n'
+p162
+g162
+sS'Admin is disabled because insecure channel'
+p163
+S'amministrazione disabilitata: comunicazione non sicura'
+p164
+sS'Original/Translation'
+p165
+S'Originale/Traduzione'
+p166
+sS'the presentations layer, views are also known as templates'
+p167
+S'Presentazione dell\'applicazione, viste (views, chiamate anche "templates")'
+p168
+sS'uncheck all'
+p169
+S'smarca tutti'
+p170
+sS'no match'
+p171
+S'nessuna corrispondenza'
+p172
+sS'Available databases and tables'
+p173
+S'Database e tabelle disponibili'
+p174
+sS'Cannot be empty'
+p175
+S'Non pu\xc3\xb2 essere vuoto'
+p176
+sS'data uploaded'
+p177
+S'dati caricati'
+p178
+sS'"update" is an optional expression like "field1=\'newvalue\'". You cannot update or delete the results of a JOIN'
+p179
+S'"update" \xc3\xa8 un\'espressione opzionale come "campo1=\'nuovo valore\'". Non si pu\xc3\xb2 fare "update" o "delete" dei risultati di un JOIN '
+p180
+sS'(something like "it-it")'
+p181
+S'(qualcosa simile a "it-it")'
+p182
+sS'compile'
+p183
+S'compila'
+p184
+sS'install'
+p185
+S'installa'
+p186
+sS'Cannot compile: there are errors in your app:'
+p187
+S"Compilazione fallita: ci sono errori nell'applicazione."
+p188
+sS'translation strings for the application'
+p189
+S"stringhe di traduzioni per l'applicazione"
+p190
+sS'file changed on disk'
+p191
+S'il file ha subito una modifica su disco'
+p192
+sS'Language files (static strings) updated'
+p193
+S'Linguaggi (documenti con stringhe statiche) aggiornati'
+p194
+sS'site'
+p195
+S'sito'
+p196
+sS'database administration'
+p197
+S'amministrazione database'
+p198
+sS'Stylesheet'
+p199
+S'Foglio di stile (stylesheet)'
+p200
+sS'remove compiled'
+p201
+S'rimozione codice compilato'
+p202
+sS'Rows selected'
+p203
+S'Righe selezionate'
+p204
+sS'export as csv file'
+p205
+S'esporta come file CSV'
+p206
+sS'cannot upload file "%(filename)s"'
+p207
+S'impossibile caricare il file "%(filename)s"'
+p208
+sS'DB Model'
+p209
+S'Modello di DB'
+p210
+sS'Internal State'
+p211
+S'Stato interno'
+p212
+sS'compiled application removed'
+p213
+S"rimosso il codice compilato dell'applicazione"
+p214
+sS'models'
+p215
+S'modelli'
+p216
+sS'arguments'
+p217
+g217
+sS'click here for the administrative interface'
+p218
+S"clicca per l'interfaccia amministrativa"
+p219
+sS'New Record'
+p220
+S'Nuovo elemento (record)'
+p221
+sS'About'
+p222
+S'Informazioni'
+p223
+sS'web2py is up to date'
+p224
+S'web2py \xc3\xa8 aggiornato'
+p225
+sS'Delete:'
+p226
+S'Cancella:'
+p227
+sS'Query:'
+p228
+S'Richiesta (query):'
+p229
+sS'Modules'
+p230
+S'Moduli'
+p231
+sS'edit controller'
+p232
+S'modifica controller'
+p233
+sS'the application logic, each URL path is mapped in one exposed function in the controller'
+p234
+S'logica dell\'applicazione, ogni percorso "URL" corrisponde ad una funzione esposta da un controller'
+p235
+sS'View'
+p236
+S'Vista'
+p237
+sS'plugin "%(plugin)s" deleted'
+p238
+S'plugin "%(plugin)s" cancellato'
+p239
+sS'Checking for upgrades...'
+p240
+S'Controllo aggiornamenti in corso...'
+p241
+sS'database'
+p242
+g242
+sS'Installed applications'
+p243
+S'Applicazioni installate'
+p244
+sS'register'
+p245
+S'registrazione'
+p246
+sS'Welcome to web2py'
+p247
+S'Benvenuto su web2py'
+p248
+sS'update all languages'
+p249
+S'aggiorna tutti i linguaggi'
+p250
+sS'file saved on %s'
+p251
+S'file salvato: %s'
+p252
+sS'uninstall'
+p253
+S'disinstalla'
+p254
+sS'restore'
+p255
+S'ripristino'
+p256
+sS'help'
+p257
+S'aiuto'
+p258
+sS'file "%(filename)s" uploaded'
+p259
+S'caricato il file "%(filename)s"'
+p260
+sS'file saved on %(time)s'
+p261
+S"file salvato nell'istante %(time)s"
+p262
+sS'edit views:'
+p263
+S'modifica viste (view):'
+p264
+sS'upload application:'
+p265
+S'carica applicazione:'
+p266
+sS'Are you sure you want to upgrade web2py now?'
+p267
+S'Confermi di voler aggiornare web2py ora?'
+p268
+sS'Menu Model'
+p269
+S'Menu Modelli'
+p270
+sS'unable to upgrade because "%s"'
+p271
+S'impossibile aggiornare perch\xc3\xa9 "%s"'
+p272
+sS'Views'
+p273
+S'viste'
+p274
+sS'There are no modules'
+p275
+S'Non ci sono moduli'
+p276
+sS'Deploy on Google App Engine'
+p277
+S'Installa su Google App Engine'
+p278
+sS'PAM authenticated user, cannot change password here'
+p279
+S'utente autenticato tramite PAM, impossibile modificare password qui'
+p280
+sS'add'
+p281
+g281
+sS'extends'
+p282
+S'estende'
+p283
+sS'Testing application'
+p284
+S'Test applicazione in corsg'
+p285
+sS'ATTENTION: you cannot edit the running application!'
+p286
+S"ATTENZIONE: non puoi modificare l'applicazione correntemente in uso "
+p287
+sS'Rows in table'
+p288
+S'Righe nella tabella'
+p289
+sS'License for'
+p290
+S'Licenza relativa a'
+p291
+sS'appadmin is disabled because insecure channel'
+p292
+S'amministrazione app (appadmin) disabilitata: comunicazione non sicura'
+p293
+sS'record does not exist'
+p294
+S'il record non esiste'
+p295
+sS'views'
+p296
+g274
+sS'new application "%s" created'
+p297
+S'creata la nuova applicazione "%s"'
+p298
+sS'Unable to download because'
+p299
+S'Impossibile scaricare perch\xc3\xa9'
+p300
+sS'No databases in this application'
+p301
+S'Nessun database presente in questa applicazione'
+p302
+sS'unable to delete file "%(filename)s"'
+p303
+S'impossibile rimuovere file "%(plugin)s"'
+p304
+sS'created by'
+p305
+S'creato da'
+p306
+sS'click to check for upgrades'
+p307
+S'clicca per controllare presenza di aggiornamenti'
+p308
+sS'There are no models'
+p309
+S'Non ci sono modelli'
+p310
+sS'htmledit'
+p311
+S'modifica come html'
+p312
+sS'EDIT'
+p313
+S'MODIFICA'
+p314
+sS'pack all'
+p315
+S'crea pacchetto'
+p316
+sS'%s rows deleted'
+p317
+S'%s righe ("record") cancellate'
+p318
+sS'revert'
+p319
+S'versione precedente'
+p320
+sS'Invalid action'
+p321
+S'Azione non valida'
+p322
+sS'controllers'
+p323
+g323
+sS'edit'
+p324
+S'modifica'
+p325
+sS'these files are served without processing, your images go here'
+p326
+S'questi files vengono serviti cos\xc3\xac come sono, le immagini vanno qui'
+p327
+sS'invalid request'
+p328
+S'richiesta non valida'
+p329
+sS'Check to delete'
+p330
+S'Seleziona per cancellare'
+p331
+sS'create file with filename:'
+p332
+S'crea un file col nome:'
+p333
+sS'back'
+p334
+S'indietro'
+p335
+sS'crontab'
+p336
+g336
+sS'exposes'
+p337
+S'espone'
+p338
+sS'Editing file "%s"'
+p339
+S'Modifica del file "%s"'
+p340
+sS'static'
+p341
+S'statico'
+p342
+sS'next 100 rows'
+p343
+S'prossime 100 righe'
+p344
+sS'Current response'
+p345
+S'Risposta (response) corrente'
+p346
+sS'merge'
+p347
+S'unisci'
+p348
+sS'loading...'
+p349
+S'caricamento...'
+p350
+sS'Current request'
+p351
+S'Richiesta (request) corrente'
+p352
+sS'Resolve Conflict file'
+p353
+S'File di risoluzione conflitto'
+p354
+sS'currently saved or'
+p355
+S'attualmente salvato o'
+p356
+sS'Upload & install packed application'
+p357
+S'Carica ed installa pacchetto con applicazione'
+p358
+sS'previous 100 rows'
+p359
+S'100 righe precedenti'
+p360
+sS'A new version of web2py is available: %s'
+p361
+S'\xc3\x88 disponibile una nuova versione di web2py: %s'
+p362
+sS'file "%s" of %s restored'
+p363
+S'ripristinato "%(filename)s"'
+p364
+sS'view'
+p365
+S'vista'
+p366
+sS'Delete'
+p367
+S'Cancella'
+p368
+sS'file does not exist'
+p369
+S'file inesistente'
+p370
+sS'about'
+p371
+S'informazioni'
+p372
+sS'try something like'
+p373
+S'prova qualcosa come'
+p374
+sS'There are no controllers'
+p375
+S'Non ci sono controller'
+p376
+sS'the data representation, define database tables and sets'
+p377
+S'rappresentazione dei dati, definizione di tabelle di database e di "set" '
+p378
+sS'insert new %s'
+p379
+S'inserisci nuovo %s'
+p380
+sS'Last saved on:'
+p381
+S'Ultimo salvataggio:'
+p382
+sS'Saved file hash:'
+p383
+S'Hash del file salvato:'
+p384
+sS'Edit This App'
+p385
+S'Modifica questa applicazione'
+p386
+sS'Copyright'
+p387
+g387
+sS'cannot create file'
+p388
+S'impossibile creare il file'
+p389
+sS'variables'
+p390
+g390
+sS'selected'
+p391
+S'selezionato'
+p392
+sS'delete all checked'
+p393
+S'cancella tutti i selezionati'
+p394
+sS'Date and Time'
+p395
+S'Data and Ora'
+p396
+sS'and rename it (required):'
+p397
+S'e rinominala (obbligatorio):'
+p398
+sS'failed to reload module because:'
+p399
+S'ricaricamento modulo fallito perch\xc3\xa9:'
+p400
+sS'NO'
+p401
+g401
+sS'Models'
+p402
+S'Modelli'
+p403
+sS'submit'
+p404
+S'invia'
+p405
+sS'application "%s" uninstalled'
+p406
+S'applicazione "%s" disinstallata'
+p407
+sS'%Y-%m-%d %H:%M:%S'
+p408
+S'%d/%m/%Y %H:%M:%S'
+p409
+sS'shell'
+p410
+g410
+sS'Plugin "%s" in application'
+p411
+S'Plugin "%s" nell\'applicazione'
+p412
+sS'Database'
+p413
+g413
+sS'Main Menu'
+p414
+S'Menu principale'
+p415
+sS'Functions with no doctests will result in [passed] tests.'
+p416
+S'I test delle funzioni senza "doctests" risulteranno sempre [passed].'
+p417
+sS'additional code for your application'
+p418
+S'righe di codice aggiuntive per la tua applicazione'
+p419
+sS'Create new application'
+p420
+S'Crea nuova applicazione'
+p421
+sS'admin disabled because no admin password'
+p422
+S'amministrazione disabilitata per mancanza di password amministrativa'
+p423
+sS'ATTENTION: Login requires a secure (HTTPS) connection or running on localhost.'
+p424
+S"ATTENZIONE: L'accesso richiede una connessione sicura (HTTPS) o l'esecuzione di web2py in locale (connessione su localhost)"
+p425
+sS'Welcome %s'
+p426
+S'Benvenuto %s'
+p427
+sS'Login to the Administrative Interface'
+p428
+S"Accesso all'interfaccia amministrativa"
+p429
+sS'new plugin installed'
+p430
+S'installato nuovo plugin'
+p431
+sS'ATTENTION: TESTING IS NOT THREAD SAFE SO DO NOT PERFORM MULTIPLE TESTS CONCURRENTLY.'
+p432
+S'ATTENTZIONE: NON ESEGUIRE PI\xc3\x99 TEST IN PARALLELO (I TEST NON SONO "THREAD SAFE")'
+p433
+sS'record'
+p434
+g434
+sS'application compiled'
+p435
+S'applicazione compilata'
+p436
+sS'Plugins'
+p437
+S'I Plugins'
+p438
+sS'delete'
+p439
+g368
+sS'Layout'
+p440
+g440
+sS'upload file:'
+p441
+S'carica file:'
+p442
+sS'defines tables'
+p443
+S'defininisce le tabelle'
+p444
+sS'Edit application'
+p445
+S'Modifica applicazione'
+p446
+sS'There are no views'
+p447
+S'Non ci sono viste ("view")'
+p448
+sS'Hello World'
+p449
+S'Salve Mondo'
+p450
+sS'web2py upgraded; please restart it'
+p451
+S'web2py aggiornato; prego riavviarlo'
+p452
+sS'change password'
+p453
+S'cambia password'
+p454
+sS'internal error'
+p455
+S'errore interno'
+p456
+sS'To create a plugin, name a file/folder plugin_[name]'
+p457
+S'Per creare un plugin, chiamare un file o cartella plugin_[nome]'
+p458
+sS'TM'
+p459
+g459
+sS'test'
+p460
+g460
+sS'Ticket'
+p461
+g461
+sS'admin disabled because unable to access password file'
+p462
+S'amministrazione disabilitata per impossibilit\xc3\xa0 di leggere il file delle password'
+p463
+sS'Are you sure you want to delete file "%s"?'
+p464
+S'Confermi di voler cancellare il file "%s"?'
+p465
+sS'Edit'
+p466
+S'Modifica'
+p467
+sS'update'
+p468
+S'aggiorna'
+p469
+sS'includes'
+p470
+S'include'
+p471
+sS'check all'
+p472
+S'controlla tutto'
+p473
+sS'Login'
+p474
+S'Accesso'
+p475
+sS'or provide app url:'
+p476
+S"oppure fornisci url dell'applicazione:"
+p477
+sS'web2py Recent Tweets'
+p478
+S'Tweets recenti per web2py'
+p479
+sS'Peeking at file'
+p480
+S'Uno sguardo al file'
+p481
+sS'create new application:'
+p482
+g482
+sS'and rename it:'
+p483
+S'e rinominala:'
+p484
+sS'modules'
+p485
+S'moduli'
+p486
+sS'Administrator Password:'
+p487
+S'Password Amministratore:'
+p488
+sS'clean'
+p489
+S'pulisci'
+p490
+sS'pack compiled'
+p491
+S'crea pacchetto del codice compilato'
+p492
+sS'Static files'
+p493
+S'Files statici'
+p494
+sS'unable to delete file plugin "%(plugin)s"'
+p495
+S'impossibile rimuovere file di plugin "%(plugin)s"'
+p496
+ssS'language_file'
+p497
+S'/home/web2py/new/applications/admin/languages/it-it.py'
+p498
+sS'folder'
+p499
+S'/home/web2py/new/applications/admin/'
+p500
+sbsbsS'pam_user'
+p501
+NsS'authorized'
+p502
+I01
+sS'last_time'
+p503
+F1284559637.677357
+s.

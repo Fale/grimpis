@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+<div class="title">{{=T("List groups")}}</div>
+<table class="smarttable">
+<thead>
+    <tr>
+        <th>{{=db.auth_group.role.label}}</th>
+        <th>{{=db.auth_group.description.label}}</th>
+    </tr>    
+</thead>
+<tbody>
+{{for k,row in enumerate(rows):}} 
+    <tr class="{{='odd' if k%2 else 'even'}}">
+       <td>{{=row.role}}</td>   
+       <td>{{=row.description}}</td>
+    </tr>
+{{pass}}
+</tbody>
+</table>
