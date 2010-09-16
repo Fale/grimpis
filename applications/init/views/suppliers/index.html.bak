@@ -1,0 +1,29 @@
+{{extend 'layout.html'}}
+<div class="title">{{=T("List Customers")}}</div>
+<div class="add">{{=A(T("Add Customer"),_href=URL(request.application,"customers","add"))}}</div>
+<table class="smarttable">
+<thead>
+    <tr>
+      <th width="16px"></th>
+      <th>{{=db.partners.name.label}}</th>
+      <th>{{=db.partners.piva.label}}</th>
+      <th>{{=db.partners.email.label}}</th>
+      <th>{{=db.partners.mobile.label}}</th>
+      <th>{{=db.partners.phone.label}}</th>
+      <th>{{=T("Works")}}</th>
+    </tr>    
+</thead>
+<tbody>
+{{for k,row in enumerate(rows):}} 
+    <tr class="{{='odd' if k%2 else 'even'}}">
+       <td>{{=A(IMG(_src=URL(request.application,'static/images','edit.png')),_href=URL(request.application,"customers","edit", args=[row.id]))}}</td>
+       <td>{{=row.name}}</td>   
+       <td>{{=row.piva}}</td>   
+       <td>{{=row.email}}</td>   
+       <td>{{=row.mobile}}</td>   
+       <td>{{=row.phone}}</td>
+       <td>{{=A(T("View"),_href=URL(request.application,"works","index", vars=dict(c=row.id)))}}</td>
+    </tr>
+{{pass}}
+</tbody>
+</table>

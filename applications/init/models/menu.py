@@ -15,6 +15,7 @@ response.version = "0.3"
 
 response.menu = [
     (T('Index'), False, URL(request.application,'default','index'), []),
+    (T('Suppliers'), False, URL(request.application,'suppliers','index'), []),
     (T('Customers'), False, URL(request.application,'customers','index'), []),
     (T('Works'), False, URL(request.application,'works','index'), []),
     (T('Users'), False, URL(request.application,'users','index'), []),
