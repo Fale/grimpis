@@ -126,22 +126,12 @@
     </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.tools.Auth-class.html">web2py.gluon.tools.Auth</a></strong>:
-      <em class="summary">Class for authentication, authorization, role based access control.</em>
-    </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sql.Expression-class.html">web2py.gluon.sql.Expression</a></strong>
     <ul>
     <li> <strong class="uidlink"><a href="web2py.gluon.sql.Field-class.html">web2py.gluon.sql.Field</a></strong>:
       <em class="summary">an instance of this class represents a database field</em>
     </li>
     </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.SQLALL-class.html">web2py.gluon.dal.SQLALL</a></strong>:
-      <em class="summary">Helper class providing a comma-separated string having all the 
-        field names (prefixed by table name and '.')</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Query-class.html">web2py.gluon.dal.Query</a></strong>:
-      <em class="summary">a query object necessary to define a set.</em>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.validators.Validator-class.html">web2py.gluon.validators.Validator</a></strong>:
       <em class="summary">Root for all validators, mainly for documentation purposes.</em>
@@ -280,39 +270,11 @@ This function only checks the URL's syntax.</em>
     </li>
     </ul>
     </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.tools.Crud-class.html">web2py.gluon.tools.Crud</a></strong>
+    </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sql.Set-class.html">web2py.gluon.sql.Set</a></strong>:
       <em class="summary">a Set represents a set of records in the database,
 the records are identified by the where=Query(...) object.</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.tools.Mail-class.html">web2py.gluon.tools.Mail</a></strong>:
-      <em class="summary">Class for configuring and sending emails with alternative text /
-        html body, multiple attachments and encryption support</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.cache.Cache-class.html">web2py.gluon.cache.Cache</a></strong>:
-      <em class="summary">Sets up generic caching, creating an instance of both CacheInRam and
-CacheOnDisk.</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Set-class.html">web2py.gluon.dal.Set</a></strong>:
-      <em class="summary">a Set represents a set of records in the database,
-the records are identified by the where=Query(...) object.</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.sql.Rows-class.html">web2py.gluon.sql.Rows</a></strong>:
-      <em class="summary">A wrapper for the return value of a select.</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.sql.SQLJoin-class.html">web2py.gluon.sql.SQLJoin</a></strong>:
-      <em class="summary">Helper class providing the join statement between the given 
-        tables/queries.</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.sql.SQLALL-class.html">web2py.gluon.sql.SQLALL</a></strong>:
-      <em class="summary">Helper class providing a comma-separated string having all the 
-        field names (prefixed by table name and '.')</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.languages.translator-class.html">web2py.gluon.languages.translator</a></strong>:
-      <em class="summary">this class is instantiated by gluon.compileapp.build_environment
-        as the T object</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.main.HttpServer-class.html">web2py.gluon.main.HttpServer</a></strong>:
-      <em class="summary">the web2py web server (Rocket)</em>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.FormWidget-class.html">web2py.gluon.sqlhtml.FormWidget</a></strong>:
       <em class="summary">helper for SQLFORM to generate form input fields (widget), 
@@ -330,9 +292,11 @@ the records are identified by the where=Query(...) object.</em>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.StringWidget-class.html">web2py.gluon.sqlhtml.StringWidget</a></strong>
     <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.DoubleWidget-class.html">web2py.gluon.sqlhtml.DoubleWidget</a></strong>
+    </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.DatetimeWidget-class.html">web2py.gluon.sqlhtml.DatetimeWidget</a></strong>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.DoubleWidget-class.html">web2py.gluon.sqlhtml.DoubleWidget</a></strong>
+    <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.ListWidget-class.html">web2py.gluon.sqlhtml.ListWidget</a></strong>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.IntegerWidget-class.html">web2py.gluon.sqlhtml.IntegerWidget</a></strong>
     </li>
@@ -340,49 +304,57 @@ the records are identified by the where=Query(...) object.</em>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.TimeWidget-class.html">web2py.gluon.sqlhtml.TimeWidget</a></strong>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.ListWidget-class.html">web2py.gluon.sqlhtml.ListWidget</a></strong>
-    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.TextWidget-class.html">web2py.gluon.sqlhtml.TextWidget</a></strong>
+    <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.PasswordWidget-class.html">web2py.gluon.sqlhtml.PasswordWidget</a></strong>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.UploadWidget-class.html">web2py.gluon.sqlhtml.UploadWidget</a></strong>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.BooleanWidget-class.html">web2py.gluon.sqlhtml.BooleanWidget</a></strong>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.PasswordWidget-class.html">web2py.gluon.sqlhtml.PasswordWidget</a></strong>
+    <li> <strong class="uidlink"><a href="web2py.gluon.sqlhtml.TextWidget-class.html">web2py.gluon.sqlhtml.TextWidget</a></strong>
     </li>
     </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.cache.Cache-class.html">web2py.gluon.cache.Cache</a></strong>:
+      <em class="summary">Sets up generic caching, creating an instance of both CacheInRam and
+CacheOnDisk.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Logger-class.html">web2py.gluon.dal.Logger</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.languages.lazyT-class.html">web2py.gluon.languages.lazyT</a></strong>:
+      <em class="summary">never to be called explicitly, returned by 
+        translator.__call__</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.highlight.Highlighter-class.html">web2py.gluon.highlight.Highlighter</a></strong>:
+      <em class="summary">Do syntax highlighting.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.sql.Rows-class.html">web2py.gluon.sql.Rows</a></strong>:
+      <em class="summary">A wrapper for the return value of a select.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.sql.SQLJoin-class.html">web2py.gluon.sql.SQLJoin</a></strong>:
+      <em class="summary">Helper class providing the join statement between the given 
+        tables/queries.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.sql.SQLALL-class.html">web2py.gluon.sql.SQLALL</a></strong>:
+      <em class="summary">Helper class providing a comma-separated string having all the 
+        field names (prefixed by table name and '.')</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.languages.translator-class.html">web2py.gluon.languages.translator</a></strong>:
+      <em class="summary">this class is instantiated by gluon.compileapp.build_environment
+        as the T object</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Set-class.html">web2py.gluon.dal.Set</a></strong>:
+      <em class="summary">a Set represents a set of records in the database,
+the records are identified by the where=Query(...) object.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.main.HttpServer-class.html">web2py.gluon.main.HttpServer</a></strong>:
+      <em class="summary">the web2py web server (Rocket)</em>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sql.Query-class.html">web2py.gluon.sql.Query</a></strong>:
       <em class="summary">a query object necessary to define a set.</em>
     </li>
-    <li> <strong class="uidlink">threading._Verbose</strong>
-    <ul>
-    <li> <strong class="uidlink">threading.Thread</strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.newcron.extcron-class.html">web2py.gluon.newcron.extcron</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.newcron.hardcron-class.html">web2py.gluon.newcron.hardcron</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.newcron.softcron-class.html">web2py.gluon.newcron.softcron</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.newcron.cronlauncher-class.html">web2py.gluon.newcron.cronlauncher</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.Monitor-class.html">web2py.gluon.rocket.Monitor</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.Worker-class.html">web2py.gluon.rocket.Worker</a></strong>:
-      <em class="summary">The Worker class is a base class responsible for receiving 
-        connections and (a subclass) will run an application to process the
-        the connection</em>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.WSGIWorker-class.html">web2py.gluon.rocket.WSGIWorker</a></strong>
-    </li>
-    </ul>
-    </li>
-    </ul>
-    </li>
-    </ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.widget.IO-class.html">web2py.gluon.widget.IO</a></strong>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.cache.CacheAbstract-class.html">web2py.gluon.cache.CacheAbstract</a></strong>:
       <em class="summary">Abstract class for cache implementations.</em>
@@ -395,34 +367,14 @@ the records are identified by the where=Query(...) object.</em>
     </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.tools.PluginManager-class.html">web2py.gluon.tools.PluginManager</a></strong>:
-      <em class="summary">Plugin Manager is similar to a storage object but it is a single
-        level singleton this means that multiple instances within the same 
-        thread share the same attributes Its contructor is also 
-        special.</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.widget.web2pyDialog-class.html">web2py.gluon.widget.web2pyDialog</a></strong>:
-      <em class="summary">Main window dialog</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Expression-class.html">web2py.gluon.dal.Expression</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Field-class.html">web2py.gluon.dal.Field</a></strong>:
-      <em class="summary">an instance of this class represents a database field</em>
-    </li>
-    </ul>
-    </li>
     <li> <strong class="uidlink">dict</strong>:
       <em class="summary">dict() -&gt; new empty dictionary.</em>
     <ul>
     <li> <strong class="uidlink"><a href="web2py.gluon.sql.SQLDB-class.html">web2py.gluon.sql.SQLDB</a></strong>:
       <em class="summary">an instance of this class represents a database connection</em>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.thread_local_singleton.Singleton-class.html">web2py.gluon.thread_local_singleton.Singleton</a></strong>:
-      <em class="summary">This class makes a thread local Singleton (i.e.</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Row-class.html">web2py.gluon.dal.Row</a></strong>:
-      <em class="summary">a dictionary that lets you do d['a'] as well as d.a this is only
-        used to store a Row</em>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.DAL-class.html">web2py.gluon.dal.DAL</a></strong>:
+      <em class="summary">an instance of this class represents a database connection</em>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.sql.Row-class.html">web2py.gluon.sql.Row</a></strong>:
       <em class="summary">a dictionary that lets you do d['a'] as well as d.a this is only
@@ -436,8 +388,9 @@ the records are identified by the where=Query(...) object.</em>
     </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Table-class.html">web2py.gluon.dal.Table</a></strong>:
-      <em class="summary">an instance of this class represents a database table</em>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Row-class.html">web2py.gluon.dal.Row</a></strong>:
+      <em class="summary">a dictionary that lets you do d['a'] as well as d.a this is only
+        used to store a Row</em>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.storage.Storage-class.html">web2py.gluon.storage.Storage</a></strong>:
       <em class="summary">A Storage object is like a dictionary except `obj.foo` can be 
@@ -448,81 +401,36 @@ the records are identified by the where=Query(...) object.</em>
         members response.write(   ) can be used to write in the output 
         html</em>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.storage.Messages-class.html">web2py.gluon.storage.Messages</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.globals.Request-class.html">web2py.gluon.globals.Request</a></strong>:
-      <em class="summary">defines the request object and the default values of its members...</em>
-    </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.storage.StorageList-class.html">web2py.gluon.storage.StorageList</a></strong>:
       <em class="summary">like Storage but missing elements default to [] instead of 
         None</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.storage.Settings-class.html">web2py.gluon.storage.Settings</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.globals.Request-class.html">web2py.gluon.globals.Request</a></strong>:
+      <em class="summary">defines the request object and the default values of its members...</em>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.globals.Session-class.html">web2py.gluon.globals.Session</a></strong>:
       <em class="summary">defines the session object and the default values of its members
         (None)</em>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.storage.Settings-class.html">web2py.gluon.storage.Settings</a></strong>
-    </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.restricted.TicketStorage-class.html">web2py.gluon.restricted.TicketStorage</a></strong>:
       <em class="summary">defines the ticket object and the default values of its members 
         (None)</em>
     </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.storage.Messages-class.html">web2py.gluon.storage.Messages</a></strong>
+    </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.DAL-class.html">web2py.gluon.dal.DAL</a></strong>:
-      <em class="summary">an instance of this class represents a database connection</em>
+    <li> <strong class="uidlink"><a href="web2py.gluon.thread_local_singleton.Singleton-class.html">web2py.gluon.thread_local_singleton.Singleton</a></strong>:
+      <em class="summary">This class makes a thread local Singleton (i.e.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Table-class.html">web2py.gluon.dal.Table</a></strong>:
+      <em class="summary">an instance of this class represents a database table</em>
     </li>
     </ul>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.template.TemplateParser-class.html">web2py.gluon.template.TemplateParser</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.ConnectionPool-class.html">web2py.gluon.dal.ConnectionPool</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.BaseAdapter-class.html">web2py.gluon.dal.BaseAdapter</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.DB2Adapter-class.html">web2py.gluon.dal.DB2Adapter</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.FireBirdAdapter-class.html">web2py.gluon.dal.FireBirdAdapter</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.FireBirdEmbeddedAdapter-class.html">web2py.gluon.dal.FireBirdEmbeddedAdapter</a></strong>
-    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.SQLiteAdapter-class.html">web2py.gluon.dal.SQLiteAdapter</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.JDBCSQLiteAdapter-class.html">web2py.gluon.dal.JDBCSQLiteAdapter</a></strong>
-    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.PostgreSQLAdapter-class.html">web2py.gluon.dal.PostgreSQLAdapter</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.JDBCPostgreSQLAdapter-class.html">web2py.gluon.dal.JDBCPostgreSQLAdapter</a></strong>
-    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.OracleAdapter-class.html">web2py.gluon.dal.OracleAdapter</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.InformixAdapter-class.html">web2py.gluon.dal.InformixAdapter</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.MySQLAdapter-class.html">web2py.gluon.dal.MySQLAdapter</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.IngresAdapter-class.html">web2py.gluon.dal.IngresAdapter</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.IngresUnicodeAdapter-class.html">web2py.gluon.dal.IngresUnicodeAdapter</a></strong>
-    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.MSSQLAdapter-class.html">web2py.gluon.dal.MSSQLAdapter</a></strong>
-    <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.MSSQLAdapter2-class.html">web2py.gluon.dal.MSSQLAdapter2</a></strong>
-    </li>
-    </ul>
-    </li>
-    </ul>
-    </li>
-    </ul>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Logger-class.html">web2py.gluon.dal.Logger</a></strong>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.html.XmlComponent-class.html">web2py.gluon.html.XmlComponent</a></strong>:
       <em class="summary">Abstract root for all Html components</em>
@@ -649,11 +557,11 @@ the input helper takes two special attributes value= and requires=.</em>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.html.H2-class.html">web2py.gluon.html.H2</a></strong>
     </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.tools.Recaptcha-class.html">web2py.gluon.tools.Recaptcha</a></strong>
+    </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.html.P-class.html">web2py.gluon.html.P</a></strong>:
       <em class="summary">Will replace ``\n`` by ``&lt;br /&gt;`` if the `cr2br` attribute
         is provided.</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.tools.Recaptcha-class.html">web2py.gluon.tools.Recaptcha</a></strong>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.html.HEAD-class.html">web2py.gluon.html.HEAD</a></strong>
     </li>
@@ -726,10 +634,55 @@ turns any list, dictionary, etc into decent looking html.</em>
     </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Rows-class.html">web2py.gluon.dal.Rows</a></strong>:
-      <em class="summary">A wrapper for the return value of a select.</em>
+    <li> <strong class="uidlink"><a href="web2py.gluon.tools.Mail-class.html">web2py.gluon.tools.Mail</a></strong>:
+      <em class="summary">Class for configuring and sending emails with alternative text /
+        html body, multiple attachments and encryption support</em>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.tools.Crud-class.html">web2py.gluon.tools.Crud</a></strong>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.ConnectionPool-class.html">web2py.gluon.dal.ConnectionPool</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.BaseAdapter-class.html">web2py.gluon.dal.BaseAdapter</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.PostgreSQLAdapter-class.html">web2py.gluon.dal.PostgreSQLAdapter</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.JDBCPostgreSQLAdapter-class.html">web2py.gluon.dal.JDBCPostgreSQLAdapter</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.FireBirdAdapter-class.html">web2py.gluon.dal.FireBirdAdapter</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.FireBirdEmbeddedAdapter-class.html">web2py.gluon.dal.FireBirdEmbeddedAdapter</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.MySQLAdapter-class.html">web2py.gluon.dal.MySQLAdapter</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.IngresAdapter-class.html">web2py.gluon.dal.IngresAdapter</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.IngresUnicodeAdapter-class.html">web2py.gluon.dal.IngresUnicodeAdapter</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.DB2Adapter-class.html">web2py.gluon.dal.DB2Adapter</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.MSSQLAdapter-class.html">web2py.gluon.dal.MSSQLAdapter</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.MSSQLAdapter2-class.html">web2py.gluon.dal.MSSQLAdapter2</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.OracleAdapter-class.html">web2py.gluon.dal.OracleAdapter</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.InformixAdapter-class.html">web2py.gluon.dal.InformixAdapter</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.SQLiteAdapter-class.html">web2py.gluon.dal.SQLiteAdapter</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.JDBCSQLiteAdapter-class.html">web2py.gluon.dal.JDBCSQLiteAdapter</a></strong>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
+    </ul>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.template.Node-class.html">web2py.gluon.template.Node</a></strong>:
       <em class="summary">Basic Container Object</em>
@@ -746,8 +699,19 @@ turns any list, dictionary, etc into decent looking html.</em>
     </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.highlight.Highlighter-class.html">web2py.gluon.highlight.Highlighter</a></strong>:
-      <em class="summary">Do syntax highlighting.</em>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Expression-class.html">web2py.gluon.dal.Expression</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Field-class.html">web2py.gluon.dal.Field</a></strong>:
+      <em class="summary">an instance of this class represents a database field</em>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Query-class.html">web2py.gluon.dal.Query</a></strong>:
+      <em class="summary">a query object necessary to define a set.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.SQLALL-class.html">web2py.gluon.dal.SQLALL</a></strong>:
+      <em class="summary">Helper class providing a comma-separated string having all the 
+        field names (prefixed by table name and '.')</em>
     </li>
     <li> <strong class="uidlink">exceptions.BaseException</strong>:
       <em class="summary">Common base class for all exceptions</em>
@@ -755,17 +719,11 @@ turns any list, dictionary, etc into decent looking html.</em>
     <li> <strong class="uidlink"><a href="exceptions.Exception-class.html">exceptions.Exception</a></strong>:
       <em class="summary">Common base class for all non-exit exceptions.</em>
     <ul>
-    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.SocketClosed-class.html">web2py.gluon.rocket.SocketClosed</a></strong>:
-      <em class="summary">Exception for when a socket is closed by the client.</em>
-    </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.rocket.SocketTimeout-class.html">web2py.gluon.rocket.SocketTimeout</a></strong>:
       <em class="summary">Exception for when a socket times out between requests.</em>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.http.HTTP-class.html">web2py.gluon.http.HTTP</a></strong>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.BadRequest-class.html">web2py.gluon.rocket.BadRequest</a></strong>:
-      <em class="summary">Exception for when a client sends an incomprehensible 
-        request.</em>
+    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.SocketClosed-class.html">web2py.gluon.rocket.SocketClosed</a></strong>:
+      <em class="summary">Exception for when a socket is closed by the client.</em>
     </li>
     <li> <strong class="uidlink">socket.error</strong>
     <ul>
@@ -773,14 +731,62 @@ turns any list, dictionary, etc into decent looking html.</em>
     </li>
     </ul>
     </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.http.HTTP-class.html">web2py.gluon.http.HTTP</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.BadRequest-class.html">web2py.gluon.rocket.BadRequest</a></strong>:
+      <em class="summary">Exception for when a client sends an incomprehensible 
+        request.</em>
+    </li>
     </ul>
     </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.http.HTTP-class.html">web2py.gluon.http.HTTP</a></strong>
     </li>
     </ul>
     </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.tools.PluginManager-class.html">web2py.gluon.tools.PluginManager</a></strong>:
+      <em class="summary">Plugin Manager is similar to a storage object but it is a single
+        level singleton this means that multiple instances within the same 
+        thread share the same attributes Its contructor is also 
+        special.</em>
+    </li>
+    <li> <strong class="uidlink">threading._Verbose</strong>
+    <ul>
+    <li> <strong class="uidlink">threading.Thread</strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.newcron.hardcron-class.html">web2py.gluon.newcron.hardcron</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.newcron.extcron-class.html">web2py.gluon.newcron.extcron</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.Monitor-class.html">web2py.gluon.rocket.Monitor</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.Worker-class.html">web2py.gluon.rocket.Worker</a></strong>:
+      <em class="summary">The Worker class is a base class responsible for receiving 
+        connections and (a subclass) will run an application to process the
+        the connection</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="web2py.gluon.rocket.WSGIWorker-class.html">web2py.gluon.rocket.WSGIWorker</a></strong>
+    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.newcron.cronlauncher-class.html">web2py.gluon.newcron.cronlauncher</a></strong>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.newcron.softcron-class.html">web2py.gluon.newcron.softcron</a></strong>
+    </li>
+    </ul>
+    </li>
+    </ul>
+    </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.validators.IS_STRONG-class.html">web2py.gluon.validators.IS_STRONG</a></strong>:
       <em class="summary">example:</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.widget.web2pyDialog-class.html">web2py.gluon.widget.web2pyDialog</a></strong>:
+      <em class="summary">Main window dialog</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.dal.Rows-class.html">web2py.gluon.dal.Rows</a></strong>:
+      <em class="summary">A wrapper for the return value of a select.</em>
+    </li>
+    <li> <strong class="uidlink"><a href="web2py.gluon.tools.Auth-class.html">web2py.gluon.tools.Auth</a></strong>:
+      <em class="summary">Class for authentication, authorization, role based access control.</em>
     </li>
     <li> <strong class="uidlink">list</strong>:
       <em class="summary">list() -&gt; new list list(sequence) -&gt; new list initialized 
@@ -796,14 +802,8 @@ turns any list, dictionary, etc into decent looking html.</em>
     </li>
     </ul>
     </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.languages.lazyT-class.html">web2py.gluon.languages.lazyT</a></strong>:
-      <em class="summary">never to be called explicitly, returned by 
-        translator.__call__</em>
-    </li>
     <li> <strong class="uidlink"><a href="web2py.gluon.validators.CRYPT-class.html">web2py.gluon.validators.CRYPT</a></strong>:
       <em class="summary">example:</em>
-    </li>
-    <li> <strong class="uidlink"><a href="web2py.gluon.widget.IO-class.html">web2py.gluon.widget.IO</a></strong>
     </li>
     </ul>
     </li>
@@ -877,7 +877,7 @@ turns any list, dictionary, etc into decent looking html.</em>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Wed Sep 15 14:47:42 2010
+    Generated by Epydoc 3.0beta1 on Wed Sep 15 19:58:12 2010
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
