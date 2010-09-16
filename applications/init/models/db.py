@@ -97,9 +97,10 @@ crud.settings.auth = None                      # =auth to enforce authorization 
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
 
-db.define_table('customers',
+db.define_table('partners',
     Field('name','string'),
     Field('piva','string'),
+    Field('out','boolean'),
     Field('email','string'),
     Field('address_num','string'),
     Field('address_road','string'),
@@ -111,31 +112,31 @@ db.define_table('customers',
     Field('phone','string'),
     Field('fax','string'))
     
-db.customers.name.label=T("Name")
-db.customers.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'customers.name')]
-db.customers.piva.label=T("P IVA")
-db.customers.piva.requires=IS_NOT_EMPTY()
-db.customers.email.label=T("E-Mail")
-db.customers.address_num.label=T("Street Number")
-db.customers.address_road.label=T("Street")
-db.customers.address_city.label=T("City")
-db.customers.address_county.label=T("County")
-db.customers.address_zip.label=T("ZIP Code")
-db.customers.address_state.label=T("State")
-db.customers.address_state.requires = IS_IN_SET(STATES,[T(x) for x in STATES])
-db.customers.address_state.default = "Italy"
-db.customers.mobile.label=T("Mobile")
-db.customers.mobile.requires=is_phone
-db.customers.phone.label=T("Phone")
-db.customers.phone.requires=is_phone
-db.customers.fax.label=T("Fax")
-db.customers.fax.requires=is_phone
+db.partners.name.label=T("Name")
+db.partners.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'partners.name')]
+db.partners.piva.label=T("P IVA")
+db.partners.piva.requires=IS_NOT_EMPTY()
+db.partners.email.label=T("E-Mail")
+db.partners.address_num.label=T("Street Number")
+db.partners.address_road.label=T("Street")
+db.partners.address_city.label=T("City")
+db.partners.address_county.label=T("County")
+db.partners.address_zip.label=T("ZIP Code")
+db.partners.address_state.label=T("State")
+db.partners.address_state.requires = IS_IN_SET(STATES,[T(x) for x in STATES])
+db.partners.address_state.default = "Italy"
+db.partners.mobile.label=T("Mobile")
+db.partners.mobile.requires=is_phone
+db.partners.phone.label=T("Phone")
+db.partners.phone.requires=is_phone
+db.partners.fax.label=T("Fax")
+db.partners.fax.requires=is_phone
 
 
 
 db.define_table('works',
     Field('name','string'),
-    Field('customer',db.customers),
+    Field('customer',db.partners),
     Field('description','string'),
     Field('assign_date','date'),
     Field('due_to_date','date'),
@@ -145,7 +146,7 @@ db.define_table('works',
     
 db.works.name.label=T("Name")
 db.works.customer.label=T("Customer")
-db.works.customer.requires=IS_IN_DB(db,'customers.id','customers.name')
+db.works.customer.requires=IS_IN_DB(db,'partners.id','partners.name')
 db.works.description.label=T("Description")
 db.works.assign_date.label=T("Assigned")
 db.works.due_to_date.label=T("Due To")

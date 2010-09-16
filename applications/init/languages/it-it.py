@@ -378,6 +378,7 @@
 'new record inserted': 'nuovo record inserito',
 'next 100 rows': 'nprossime 100 righe',
 'or import from csv file': 'o importa da un file csv',
+'please input your password again': 'please input your password again',
 'previous 100 rows': 'precedenti 100 righe',
 'record': 'record',
 'record does not exist': 'il record non esiste',

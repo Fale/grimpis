@@ -10,18 +10,18 @@
     
 @auth.requires_permission('crew')
 def index():
-    form=crud.create(db.customers)
-    rows=db(db.customers.id>0).select(orderby=db.customers.name)
+    form=crud.create(db.partners)
+    rows=db(db.partners.out==1).select(orderby=db.partners.name)
     return dict(rows=rows,form=form)
 
 @auth.requires_permission('manager')
 def add():
-    form=crud.create(db.customers,next=url('index'))
+    form=crud.create(db.partners,next=url('index'))
     return dict(form=form)
 
 @auth.requires_permission('manager')
 def edit():
     customers_id=request.args(0)
-    customers=db.customers[customers_id]
-    form=crud.update(db.customers,customers,next=url('index'))
+    customers=db.partners[customers_id]
+    form=crud.update(db.partners,customers,next=url('index'))
     return dict(form=form)
