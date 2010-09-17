@@ -1,6 +1,6 @@
 0.3
+    - Customers and suppliers share the same database
     - Add suppliers section
-    - Change scheme and name of the customers table
     - Upgrade Web2Py to 1.85.2
     - Groups are no longer editable from WUI
 
