@@ -97,6 +97,7 @@ crud.settings.auth = None                      # =auth to enforce authorization 
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
 
+## db.partners
 db.define_table('partners',
     Field('name','string'),
     Field('piva','string'),
@@ -111,7 +112,6 @@ db.define_table('partners',
     Field('mobile','string'),
     Field('phone','string'),
     Field('fax','string'))
-    
 db.partners.name.label=T("Name")
 db.partners.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'partners.name')]
 db.partners.piva.label=T("P IVA")
@@ -132,8 +132,7 @@ db.partners.phone.requires=is_phone
 db.partners.fax.label=T("Fax")
 db.partners.fax.requires=is_phone
 
-
-
+## db.works
 db.define_table('works',
     Field('name','string'),
     Field('customer',db.partners),
@@ -143,7 +142,6 @@ db.define_table('works',
     Field('status','string'),
     Field('value','integer'),
     Field('cost','integer'))
-    
 db.works.name.label=T("Name")
 db.works.customer.label=T("Customer")
 db.works.customer.requires=IS_IN_DB(db,'partners.id','partners.name')
@@ -156,8 +154,7 @@ db.works.status.default = "Open"
 db.works.value.label=T("Value")
 db.works.cost.label=T("Cost")
 
-
-
+## db.hours
 db.define_table('hours',
     Field('work',db.works),
     Field('user',db.auth_user),
@@ -165,7 +162,6 @@ db.define_table('hours',
     Field('start','datetime'),
     Field('finish','datetime'),
     Field('note','string'))
-    
 db.hours.work.label=T("Work")
 db.hours.work.requires=IS_IN_DB(db,'works.id','%(name)s')
 db.hours.user.label=T("Worker")
