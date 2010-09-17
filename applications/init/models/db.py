@@ -101,7 +101,7 @@ crud.settings.auth = None                      # =auth to enforce authorization 
 db.define_table('partners',
     Field('name','string'),
     Field('piva','string'),
-    Field('out','boolean'),
+    Field('out','boolean',writable=False,readable=False,compute=lambda o: request.controller == "customers"),
     Field('email','string'),
     Field('address_num','string'),
     Field('address_road','string'),
@@ -112,6 +112,7 @@ db.define_table('partners',
     Field('mobile','string'),
     Field('phone','string'),
     Field('fax','string'))
+db.partners.id.readable=False
 db.partners.name.label=T("Name")
 db.partners.name.requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'partners.name')]
 db.partners.piva.label=T("P IVA")
